@@ -19,12 +19,10 @@ export default function SignInPage() {
     event.preventDefault();
     setError(null);
 
+    // Who may sign up is decided in the database, which also holds the
+    // individual exceptions granted during development. Blocking here on the
+    // domain alone would lock out those accounts before the request is sent.
     const address = email.trim().toLowerCase();
-    if (!address.endsWith(`@${SCHOOL_DOMAIN}`)) {
-      setError(`Use your @${SCHOOL_DOMAIN} address.`);
-      return;
-    }
-
     setStatus("sending");
     const { error: authError } = await supabase.auth.signInWithOtp({
       email: address,
@@ -33,7 +31,7 @@ export default function SignInPage() {
 
     if (authError) {
       setStatus("idle");
-      setError(authError.message);
+      setError(readableAuthError(authError.message));
       return;
     }
     setStatus("sent");
@@ -97,4 +95,15 @@ export default function SignInPage() {
       </p>
     </main>
   );
+}
+
+/**
+ * The sign-up trigger raises a database exception for a disallowed address,
+ * which Supabase surfaces as an opaque "Database error saving new user".
+ */
+function readableAuthError(message: string) {
+  if (/not allowed to sign up|Database error saving new user/i.test(message)) {
+    return `Albert Maths is limited to @${SCHOOL_DOMAIN} addresses.`;
+  }
+  return message;
 }

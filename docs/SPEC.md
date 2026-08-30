@@ -59,6 +59,10 @@ and Marseille, so content is shared across campuses.
 ## Accounts and data
 
 - Supabase auth, school email.
+- Sign-up is gated by two tables: `allowed_email_domains` (seeded with
+  `albertschool.com`) and `allowed_emails` for individual exceptions during
+  development. **Every row in `allowed_emails` must be deleted before students
+  are let in.**
 - Some students are minors (17): no profiling, no ad tech, data minimisation.
 - Uploaded photos are deleted after processing; only the conversation thread persists.
 
