@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Albert Maths — design tokens
+   Palette sampled from the official Albert School brand:
+   - #202448  navy      (logo + rgb(32,36,72) across albertschool.com)
+   - #2EAEE0  brand     (CSS var --_themes---swatch--brand-light on the site)
+   - #74BEEA  sky       (the sphere in the logo mark)
+   - #EAEFF6  mist      (pale surface used on the site)
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Raw brand scale */
+  --color-navy-950: #0e1226;
+  --color-navy-900: #161a35;
+  --color-navy-800: #202448;
+  --color-navy-700: #2b3060;
+  --color-navy-600: #3a4078;
+  --color-navy-500: #4d5493;
+
+  --color-brand-700: #1176a3;
+  --color-brand-600: #1a92c6;
+  --color-brand-500: #2eaee0;
+  --color-brand-400: #55bee8;
+  --color-brand-300: #74beea;
+  --color-brand-200: #a6d8f2;
+  --color-brand-100: #cfe8f7;
+  --color-brand-50: #eaeff6;
+
+  --color-mist-50: #f5f8fc;
+  --color-mist-100: #eaeff6;
+  --color-mist-200: #d9e3f0;
+
+  /* Signal colours — kept legible on both themes */
+  --color-success: #17916a;
+  --color-warn: #b8760b;
+  --color-danger: #cf3b4b;
+
+  /* Typography */
+  --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-work-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --- Semantic tokens: light (default) ------------------------------------ */
+:root {
+  --bg: #ffffff;
+  --bg-subtle: #f5f8fc;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --border: #dde5f0;
+  --border-strong: #c3d1e4;
+  --text: #202448;
+  --text-muted: #5b6288;
+  --text-faint: #8b90ad;
+  --accent: #1a92c6;
+  --accent-contrast: #ffffff;
+  --glow: rgba(46, 174, 224, 0.18);
+  --ring: #2eaee0;
+}
+
+/* --- Semantic tokens: dark ----------------------------------------------- */
+:root.dark {
+  --bg: #0e1226;
+  --bg-subtle: #161a35;
+  --surface: #191e3d;
+  --surface-raised: #21274c;
+  --border: #2d3459;
+  --border-strong: #3d4570;
+  --text: #eef2fa;
+  --text-muted: #a3aacb;
+  --text-faint: #767d9f;
+  --accent: #55bee8;
+  --accent-contrast: #0e1226;
+  --glow: rgba(46, 174, 224, 0.26);
+  --ring: #55bee8;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+  --color-accent: var(--accent);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-ring: var(--ring);
+}
+
+/* --- Base ---------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /* Focus is always visible — WCAG 2.2 AA, non-negotiable. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-brand-300);
+    color: #0e1226;
+  }
+}
+
+/* --- Utilities ----------------------------------------------------------- */
+@utility grain {
+  position: relative;
+}
+
+@layer utilities {
+  /* Atmospheric mesh background — never a flat fill. */
+  .mesh-albert {
+    background-image:
+      radial-gradient(
+        60rem 40rem at 12% -10%,
+        rgba(46, 174, 224, 0.16),
+        transparent 60%
+      ),
+      radial-gradient(
+        45rem 35rem at 92% 8%,
+        rgba(116, 190, 234, 0.14),
+        transparent 62%
+      ),
+      radial-gradient(
+        50rem 40rem at 50% 108%,
+        rgba(32, 36, 72, 0.08),
+        transparent 60%
+      );
+  }
+
+  :root.dark .mesh-albert {
+    background-image:
+      radial-gradient(
+        60rem 40rem at 12% -10%,
+        rgba(46, 174, 224, 0.22),
+        transparent 60%
+      ),
+      radial-gradient(
+        45rem 35rem at 92% 8%,
+        rgba(116, 190, 234, 0.12),
+        transparent 62%
+      ),
+      radial-gradient(
+        50rem 40rem at 50% 108%,
+        rgba(85, 190, 232, 0.1),
+        transparent 60%
+      );
+  }
+
+  /* Fine grain overlay, applied on <body> via a pseudo-element. */
+  .noise::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .text-gradient-albert {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-brand-500),
+      var(--color-brand-300) 55%,
+      var(--color-navy-600)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  :root.dark .text-gradient-albert {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-brand-400),
+      var(--color-brand-200) 60%,
+      #ffffff
+    );
+  }
+}
+
+/* --- Reduced motion ------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
