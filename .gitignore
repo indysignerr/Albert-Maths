@@ -46,3 +46,8 @@ next-env.d.ts
 
 # static export output
 /out
+
+# wrangler local secrets
+.dev.vars
+.dev.vars.*
+.wrangler/

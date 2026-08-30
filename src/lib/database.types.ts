@@ -45,6 +45,33 @@ export type HintReveal = {
   revealed_at: string;
 };
 
+export type Attempt = {
+  id: string;
+  problem_id: string;
+  profile_id: string;
+  body: string;
+  error_step: string | null;
+  is_correct: boolean | null;
+  created_at: string;
+};
+
+export type TutorMessage = {
+  id: string;
+  problem_id: string;
+  profile_id: string;
+  author: MsgAuthor;
+  content: string;
+  created_at: string;
+};
+
+export type ProgressEvent = {
+  id: string;
+  profile_id: string;
+  kind: "error_understood" | "consolidation_passed";
+  problem_id: string | null;
+  created_at: string;
+};
+
 export type ChannelMessage = {
   id: string;
   class_id: string;
@@ -75,6 +102,9 @@ export interface Database {
       classes: Table<ClassRow>;
       problems: Table<Problem>;
       hint_reveals: Table<HintReveal>;
+      attempts: Table<Attempt>;
+      tutor_messages: Table<TutorMessage>;
+      progress_events: Table<ProgressEvent>;
       channel_messages: Table<ChannelMessage>;
     };
     Views: Record<string, never>;
