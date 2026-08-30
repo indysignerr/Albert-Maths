@@ -38,6 +38,21 @@ npm run build     # emits ./out — the directory Cloudflare Pages serves
 
 ## Deployment
 
-Cloudflare Pages, build command `npm run build`, output directory `out`,
-`NODE_VERSION=20`. Model API keys go in *Settings → Environment variables* as
-**encrypted** values so they stay server-side in the Pages Functions.
+Cloudflare Workers with static assets, built from Git on every push to `main`.
+
+| Setting | Value |
+| --- | --- |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Version-preview deploy command | `npx wrangler versions upload` |
+
+`wrangler.jsonc` points the Worker at `./out`, so there is no build-output field
+to fill in — do not put `out` in the deploy command.
+
+The two `NEXT_PUBLIC_SUPABASE_*` values must exist as **build-time** environment
+variables in the Cloudflare project. Next.js inlines them into the client bundle
+during `next build`; without them the build fails outright. They are public by
+design — every access rule lives in the RLS policies under `supabase/`.
+
+Model API keys are different: they stay as encrypted secrets and are only ever
+read server-side by the Worker.

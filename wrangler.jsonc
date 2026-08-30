@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "albert-maths",
+  "compatibility_date": "2026-08-30",
+
+  // The app is a Next.js static export, so the Worker serves ./out directly.
+  // Server-side work (the model proxy) will be added later as routes on this
+  // same Worker, which is why `assets` has a binding rather than being the
+  // whole deployment.
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}
