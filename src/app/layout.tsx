@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit, Work_Sans } from "next/font/google";
+import { AuthProvider } from "@/lib/auth-context";
 import { ThemeScript } from "@/components/theme-script";
 import "./globals.css";
 
@@ -59,7 +60,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeScript />
       </head>
       <body className="noise flex min-h-full flex-col bg-bg text-text">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
