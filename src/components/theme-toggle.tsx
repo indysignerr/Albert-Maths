@@ -1,26 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 
-export function ThemeToggle() {
-  const [dark, setDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
+/**
+ * The theme lives on <html>, set before first paint by ThemeScript. Rather than
+ * mirroring it into React state on mount, subscribe to the class attribute
+ * itself — one source of truth, and no hydration mismatch (the server snapshot
+ * is always light).
+ */
+function subscribe(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+  return () => observer.disconnect();
+}
 
-  useEffect(() => {
-    setMounted(true);
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
+export function ThemeToggle() {
+  const dark = useSyncExternalStore(
+    subscribe,
+    () => document.documentElement.classList.contains("dark"),
+    () => false,
+  );
 
   function toggle() {
     const next = !dark;
-    setDark(next);
     document.documentElement.classList.toggle("dark", next);
     document.documentElement.style.colorScheme = next ? "dark" : "light";
     try {
       localStorage.setItem("albert-theme", next ? "dark" : "light");
     } catch {
-      /* private mode — the choice just won't persist */
+      /* private mode — the choice just will not persist */
     }
   }
 
@@ -31,7 +43,7 @@ export function ThemeToggle() {
       aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
       className="grid size-11 place-items-center rounded-full border border-border text-text-muted transition-colors hover:border-border-strong hover:text-text"
     >
-      {mounted && dark ? (
+      {dark ? (
         <Sun className="size-[18px]" aria-hidden />
       ) : (
         <Moon className="size-[18px]" aria-hidden />

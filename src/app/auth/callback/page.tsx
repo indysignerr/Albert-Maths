@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 
@@ -12,14 +12,13 @@ import { useAuth } from "@/lib/auth-context";
 export default function AuthCallbackPage() {
   const { session, profile, ready } = useAuth();
   const router = useRouter();
-  const [failed, setFailed] = useState(false);
+
+  // Failure is derived, not stored: ready with no session means the link was
+  // already used or has expired.
+  const failed = ready && !session;
 
   useEffect(() => {
-    if (!ready) return;
-    if (!session) {
-      setFailed(true);
-      return;
-    }
+    if (!ready || !session) return;
     router.replace(profile?.onboarded_at ? "/app/" : "/onboarding/");
   }, [ready, session, profile, router]);
 

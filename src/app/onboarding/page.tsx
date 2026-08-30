@@ -21,8 +21,6 @@ export default function OnboardingPage() {
   const { session, profile, ready, refreshProfile } = useAuth();
   const router = useRouter();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastInitial, setLastInitial] = useState("");
   const [campus, setCampus] = useState<Campus | null>(null);
   const [cohort, setCohort] = useState("B1");
   const [track, setTrack] = useState<Track | null>(null);
@@ -33,15 +31,13 @@ export default function OnboardingPage() {
     if (ready && !session) router.replace("/signin/");
   }, [ready, session, router]);
 
-  useEffect(() => {
-    if (!profile) return;
-    setFirstName((v) => v || profile.first_name);
-    setLastInitial((v) => v || profile.last_initial);
-  }, [profile]);
-
-  async function onSubmit(event: React.FormEvent) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!campus || !track || !firstName.trim()) {
+    const form = new FormData(event.currentTarget);
+    const firstName = String(form.get("first_name") ?? "").trim();
+    const lastInitial = String(form.get("last_initial") ?? "").trim();
+
+    if (!campus || !track || !firstName) {
       setError("Fill in your name, campus and track.");
       return;
     }
@@ -52,8 +48,8 @@ export default function OnboardingPage() {
     const { error: updateError } = await supabase
       .from("profiles")
       .update({
-        first_name: firstName.trim(),
-        last_initial: lastInitial.trim().slice(0, 1).toUpperCase(),
+        first_name: firstName,
+        last_initial: lastInitial.slice(0, 1).toUpperCase(),
         campus,
         cohort,
         track,
@@ -72,7 +68,9 @@ export default function OnboardingPage() {
     router.replace("/app/");
   }
 
-  if (!ready) {
+  // Waiting for the profile means the inputs can be uncontrolled with a real
+  // default, instead of being mirrored into state by an effect.
+  if (!ready || !profile) {
     return (
       <main className="flex min-h-dvh items-center justify-center">
         <p className="text-text-muted">Loading…</p>
@@ -100,17 +98,17 @@ export default function OnboardingPage() {
         <div className="mt-8 grid gap-5 sm:grid-cols-[1fr_auto]">
           <Field
             label="First name"
+            name="first_name"
             required
             autoComplete="given-name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            defaultValue={profile.first_name}
           />
           <Field
             label="Initial"
+            name="last_initial"
             maxLength={1}
             className="w-20 text-center uppercase"
-            value={lastInitial}
-            onChange={(e) => setLastInitial(e.target.value)}
+            defaultValue={profile.last_initial}
           />
         </div>
 

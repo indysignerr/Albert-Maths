@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
 
+/* Tailwind v4 wires `dark:` to prefers-color-scheme by default. The theme is a
+   deliberate user choice stored on <html>, so point the variant at the class —
+   otherwise the toggle switches the CSS variables but leaves every `dark:`
+   utility stuck on the system setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ---------------------------------------------------------------------------
    Albert Maths — design tokens
    Palette sampled from the official Albert School brand:
