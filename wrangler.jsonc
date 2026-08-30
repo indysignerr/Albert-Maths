@@ -1,17 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "albert-maths",
-  "main": "worker/index.ts",
   "compatibility_date": "2026-08-30",
 
-  // The Next.js static export in ./out is served by the assets binding; the
-  // Worker in worker/index.ts only handles /api/*. Model API keys stay here,
-  // server-side — they never reach the browser.
-  "assets": {
-    "directory": "./out",
-    "binding": "ASSETS",
-    "not_found_handling": "404-page"
-  },
-
-  "observability": { "enabled": true }
+  // Cloudflare Pages project. The Next.js static export lands in ./out and the
+  // API lives in functions/ as Pages Functions, which Pages discovers on its own.
+  // Do NOT add a _routes.json: Pages detects the functions automatically, and a
+  // hand-written one is the usual reason they start 404ing.
+  "pages_build_output_dir": "./out"
 }
