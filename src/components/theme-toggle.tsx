@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 /**
  * The theme lives on <html>, set before first paint by ThemeScript. Rather than
@@ -19,6 +20,7 @@ function subscribe(onChange: () => void) {
 }
 
 export function ThemeToggle() {
+  const { t } = useT();
   const dark = useSyncExternalStore(
     subscribe,
     () => document.documentElement.classList.contains("dark"),
@@ -40,7 +42,7 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
+      aria-label={t(dark ? "common.theme.toLight" : "common.theme.toDark")}
       className="grid size-11 place-items-center rounded-full border border-border text-text-muted transition-colors hover:border-border-strong hover:text-text"
     >
       {dark ? (

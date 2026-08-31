@@ -13,12 +13,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { AlbertLogo } from "@/components/brand/logo";
+import { LanguagePicker } from "@/components/language-picker";
+import { useT, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const COHORTS = ["B1", "B2", "B3"];
 
 export default function OnboardingPage() {
   const { session, profile, ready, refreshProfile } = useAuth();
+  const { t, setLocale } = useT();
   const router = useRouter();
 
   const [campus, setCampus] = useState<Campus | null>(null);
@@ -38,13 +41,14 @@ export default function OnboardingPage() {
     const lastInitial = String(form.get("last_initial") ?? "").trim();
 
     if (!campus || !track || !firstName) {
-      setError("Fill in your name, campus and track.");
+      setError(t("onboarding.incomplete"));
       return;
     }
 
     setSaving(true);
     setError(null);
 
+    const locale = TRACKS.find((option) => option.value === track)!.locale;
     const { error: updateError } = await supabase
       .from("profiles")
       .update({
@@ -53,7 +57,7 @@ export default function OnboardingPage() {
         campus,
         cohort,
         track,
-        ui_locale: TRACKS.find((t) => t.value === track)!.locale,
+        ui_locale: locale,
         onboarded_at: new Date().toISOString(),
       })
       .eq("id", session!.user.id);
@@ -64,6 +68,9 @@ export default function OnboardingPage() {
       return;
     }
 
+    // The track is a statement about which language the student works in, so it
+    // takes effect immediately rather than waiting for the next page load.
+    setLocale(locale as Locale);
     await refreshProfile();
     router.replace("/app/");
   }
@@ -73,15 +80,18 @@ export default function OnboardingPage() {
   if (!ready || !profile) {
     return (
       <main className="flex min-h-dvh items-center justify-center">
-        <p className="text-text-muted">Loading…</p>
+        <p className="text-text-muted">{t("common.loading")}</p>
       </main>
     );
   }
 
   return (
     <main className="mesh-albert flex min-h-dvh flex-col items-center px-5 py-16">
-      <div className="mb-10 text-lg">
-        <AlbertLogo />
+      <div className="mb-10 flex flex-col items-center gap-5">
+        <div className="text-lg">
+          <AlbertLogo />
+        </div>
+        <LanguagePicker />
       </div>
 
       <form
@@ -89,22 +99,22 @@ export default function OnboardingPage() {
         className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8"
       >
         <h1 className="font-display text-2xl font-light">
-          Set up your account
+          {t("onboarding.title")}
         </h1>
         <p className="mt-2 text-[15px] text-text-muted">
-          Classmates see your first name and one initial — nothing else.
+          {t("onboarding.subtitle")}
         </p>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-[1fr_auto]">
           <Field
-            label="First name"
+            label={t("onboarding.firstName")}
             name="first_name"
             required
             autoComplete="given-name"
             defaultValue={profile.first_name}
           />
           <Field
-            label="Initial"
+            label={t("onboarding.initial")}
             name="last_initial"
             maxLength={1}
             className="w-20 text-center uppercase"
@@ -113,49 +123,58 @@ export default function OnboardingPage() {
         </div>
 
         <fieldset className="mt-8">
-          <legend className="text-sm font-medium text-text">Campus</legend>
+          <legend className="text-sm font-medium text-text">
+            {t("onboarding.campus")}
+          </legend>
           <div className="mt-3 flex flex-wrap gap-2">
-            {CAMPUSES.map((c) => (
+            {CAMPUSES.map((option) => (
               <Chip
-                key={c.value}
-                selected={campus === c.value}
-                onClick={() => setCampus(c.value)}
+                key={option.value}
+                selected={campus === option.value}
+                onClick={() => setCampus(option.value)}
               >
-                {c.label}
+                {option.label}
               </Chip>
             ))}
           </div>
         </fieldset>
 
         <fieldset className="mt-7">
-          <legend className="text-sm font-medium text-text">Year</legend>
+          <legend className="text-sm font-medium text-text">
+            {t("onboarding.year")}
+          </legend>
           <div className="mt-3 flex flex-wrap gap-2">
-            {COHORTS.map((c) => (
+            {COHORTS.map((option) => (
               <Chip
-                key={c}
-                selected={cohort === c}
-                onClick={() => setCohort(c)}
+                key={option}
+                selected={cohort === option}
+                onClick={() => setCohort(option)}
               >
-                {c}
+                {option}
               </Chip>
             ))}
           </div>
         </fieldset>
 
         <fieldset className="mt-7">
-          <legend className="text-sm font-medium text-text">Track</legend>
+          <legend className="text-sm font-medium text-text">
+            {t("onboarding.track")}
+          </legend>
           <p className="mt-1 text-sm text-text-muted">
-            This sets the language of your explanations. You can change it any
-            time in settings.
+            {t("onboarding.trackHelp")}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
-            {TRACKS.map((t) => (
+            {TRACKS.map((option) => (
               <Chip
-                key={t.value}
-                selected={track === t.value}
-                onClick={() => setTrack(t.value)}
+                key={option.value}
+                selected={track === option.value}
+                onClick={() => setTrack(option.value)}
               >
-                {t.label}
+                {t(
+                  option.value === "english"
+                    ? "onboarding.trackEnglish"
+                    : "onboarding.trackFrench",
+                )}
               </Chip>
             ))}
           </div>
@@ -168,7 +187,7 @@ export default function OnboardingPage() {
         )}
 
         <Button type="submit" disabled={saving} className="mt-8 w-full">
-          {saving ? "Saving…" : "Continue"}
+          {saving ? t("onboarding.saving") : t("common.continue")}
         </Button>
       </form>
     </main>

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { useT } from "@/lib/i18n";
 
 /**
  * The Supabase client is configured with detectSessionInUrl, so by the time the
@@ -11,6 +12,7 @@ import { useAuth } from "@/lib/auth-context";
  */
 export default function AuthCallbackPage() {
   const { session, profile, ready } = useAuth();
+  const { t } = useT();
   const router = useRouter();
 
   // Failure is derived, not stored: ready with no session means the link was
@@ -27,20 +29,18 @@ export default function AuthCallbackPage() {
       {failed ? (
         <div>
           <h1 className="font-display text-2xl font-light">
-            That link has expired
+            {t("signIn.expiredTitle")}
           </h1>
-          <p className="mt-3 text-text-muted">
-            Sign-in links are single use and short lived.
-          </p>
+          <p className="mt-3 text-text-muted">{t("signIn.expiredBody")}</p>
           <a
             href="/signin/"
             className="mt-6 inline-block text-brand-500 underline underline-offset-4"
           >
-            Request a new one
+            {t("signIn.requestNew")}
           </a>
         </div>
       ) : (
-        <p className="text-text-muted">Signing you in…</p>
+        <p className="text-text-muted">{t("signIn.signingIn")}</p>
       )}
     </main>
   );

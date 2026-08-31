@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Send } from "lucide-react";
 import { api } from "@/lib/api";
 import { Tex } from "@/components/tex";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -20,6 +21,7 @@ export function TutorChat({
   working: string | null;
   unlockedLevels: number;
 }) {
+  const { t } = useT();
   const [messages, setMessages] = useState<Message[]>([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
@@ -52,7 +54,7 @@ export function TutorChat({
         endRef.current?.scrollIntoView({ behavior: "smooth" }),
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "The tutor did not reply");
+      setError(err instanceof Error ? err.message : t("errors.generic"));
     } finally {
       setBusy(false);
     }
@@ -61,16 +63,14 @@ export function TutorChat({
   return (
     <section className="mt-10">
       <h2 className="text-sm tracking-wide text-text-faint uppercase">
-        Talk it through
+        {t("solve.chatTitle")}
       </h2>
 
       <div className="mt-3 rounded-2xl border border-border bg-surface">
         <div className="max-h-80 space-y-4 overflow-y-auto p-5">
           {messages.length === 0 ? (
             <p className="text-[15px] leading-relaxed text-text-muted">
-              Ask what you are actually stuck on. The tutor answers with
-              questions — it will not hand you the step, but it will tell you
-              straight away if something you wrote is false.
+              {t("solve.chatEmpty")}
             </p>
           ) : (
             messages.map((m, i) => (
@@ -87,25 +87,27 @@ export function TutorChat({
               </p>
             ))
           )}
-          {busy && <p className="text-sm text-text-faint">Thinking…</p>}
+          {busy && (
+            <p className="text-sm text-text-faint">{t("solve.chatThinking")}</p>
+          )}
           <div ref={endRef} />
         </div>
 
         <form onSubmit={send} className="flex gap-2 border-t border-border p-3">
           <label htmlFor="tutor-message" className="sr-only">
-            Message the tutor
+            {t("solve.chatTitle")}
           </label>
           <input
             id="tutor-message"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder="Why does this step not work?"
+            placeholder={t("solve.chatPlaceholder")}
             className="h-11 flex-1 rounded-xl border border-border bg-bg px-4 text-[15px] placeholder:text-text-faint"
           />
           <button
             type="submit"
             disabled={busy || !draft.trim()}
-            aria-label="Send"
+            aria-label={t("solve.chatSend")}
             className="grid size-11 shrink-0 place-items-center rounded-xl bg-navy-800 text-white disabled:opacity-40 dark:bg-brand-500 dark:text-navy-950"
           >
             <Send className="size-[18px]" aria-hidden />

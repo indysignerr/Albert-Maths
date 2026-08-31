@@ -9,6 +9,7 @@ import { supabase } from "@/lib/supabase/client";
 import { api, ApiError, type Review, type Transcription } from "@/lib/api";
 import { verifyAnswer, type Verdict } from "@/lib/verify";
 import { Tex } from "@/components/tex";
+import { useT } from "@/lib/i18n";
 import { TutorChat } from "@/components/solve/tutor-chat";
 import { Consolidation } from "@/components/solve/consolidation";
 import { Button } from "@/components/ui/button";
@@ -18,15 +19,10 @@ import { cn } from "@/lib/utils";
 /** Long enough to break the reflex of unlocking everything at once. */
 const REFLECTION_SECONDS = 10;
 
-const LEVEL_LABELS = [
-  "What is actually being asked",
-  "Which result applies",
-  "The first step",
-  "The full solution",
-];
-
 export default function SolvePage() {
   const { session, profile, ready } = useAuth();
+  const { t, list } = useT();
+  const levelLabels = list<readonly string[]>("solve.levels");
   const router = useRouter();
 
   const [problemId, setProblemId] = useState<string | null>(null);
@@ -118,9 +114,7 @@ export default function SolvePage() {
 
       if (gateError) {
         throw new Error(
-          level === 4
-            ? "Show your own working first — that is what unlocks the solution."
-            : gateError.message,
+          level === 4 ? t("solve.outOfOrder") : gateError.message,
         );
       }
 
@@ -183,7 +177,7 @@ export default function SolvePage() {
   if (!ready || !session) {
     return (
       <main className="flex min-h-dvh items-center justify-center">
-        <p className="text-text-muted">Loading…</p>
+        <p className="text-text-muted">{t("common.loading")}</p>
       </main>
     );
   }
@@ -195,7 +189,7 @@ export default function SolvePage() {
           <Link
             href="/app/"
             className="flex size-11 items-center justify-center rounded-full text-text-muted hover:text-text"
-            aria-label="Back"
+            aria-label={t("common.back")}
           >
             <ArrowLeft className="size-5" aria-hidden />
           </Link>
@@ -211,7 +205,7 @@ export default function SolvePage() {
             <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start">
               <section>
                 <h2 className="text-sm tracking-wide text-text-faint uppercase">
-                  The exercise
+                  {t("solve.exercise")}
                 </h2>
                 <div className="mt-3 rounded-2xl border border-border bg-surface p-6 text-lg">
                   <Tex block raw>
@@ -220,7 +214,7 @@ export default function SolvePage() {
                 </div>
                 <details className="mt-3">
                   <summary className="cursor-pointer text-sm text-text-muted">
-                    Transcribed wrong? Fix it
+                    {t("solve.fixTranscription")}
                   </summary>
                   <textarea
                     value={statement}
@@ -231,15 +225,13 @@ export default function SolvePage() {
                 </details>
 
                 <h2 className="mt-10 text-sm tracking-wide text-text-faint uppercase">
-                  Your working
+                  {t("solve.yourWorking")}
                 </h2>
                 <textarea
                   value={working}
                   onChange={(e) => setWorking(e.target.value)}
                   rows={7}
-                  placeholder={
-                    "One step per line.\nu = x, dv = e^{-x} dx\ndu = dx, v = ..."
-                  }
+                  placeholder={`${t("solve.workingPlaceholder")}\nu = x, dv = e^{-x} dx\ndu = dx, v = ...`}
                   className="mt-3 w-full rounded-xl border border-border bg-surface p-4 font-mono text-sm leading-relaxed"
                 />
                 <Button
@@ -248,7 +240,7 @@ export default function SolvePage() {
                   className="mt-3 w-full"
                 >
                   <PencilLine className="size-[18px]" aria-hidden />
-                  {busy ? "Reading…" : "Find my mistake"}
+                  {busy ? t("solve.reviewing") : t("solve.findMistake")}
                 </Button>
 
                 {review && <ReviewCard review={review} working={working} />}
@@ -278,10 +270,10 @@ export default function SolvePage() {
 
               <section>
                 <h2 className="text-sm tracking-wide text-text-faint uppercase">
-                  Hints
+                  {t("solve.hints")}
                 </h2>
                 <ol className="mt-3 space-y-3">
-                  {LEVEL_LABELS.map((label, i) => {
+                  {levelLabels.map((label, i) => {
                     const level = i + 1;
                     const revealed = hints[level] !== undefined;
                     const isNext = level === nextLevel;
@@ -336,14 +328,14 @@ export default function SolvePage() {
                               className="w-full"
                             >
                               {needsAttempt
-                                ? "Submit your working first"
+                                ? t("solve.needsAttempt")
                                 : waiting
-                                  ? `Think about it for ${secondsLeft}s`
-                                  : `Unlock hint ${level}`}
+                                  ? t("solve.waiting", { n: secondsLeft })
+                                  : t("solve.unlock", { n: level })}
                             </Button>
                             {needsAttempt && (
                               <p className="mt-2 text-sm text-text-faint">
-                                The solution costs one honest attempt.
+                                {t("solve.needsAttemptNote")}
                               </p>
                             )}
                           </div>
@@ -375,11 +367,10 @@ export default function SolvePage() {
  * know the difference between "another system agreed" and "nobody checked".
  */
 function VerdictBadge({ verdict }: { verdict: Verdict | "checking" }) {
+  const { t } = useT();
   if (verdict === "checking") {
     return (
-      <p className="mt-4 text-sm text-text-faint">
-        Recomputing this independently…
-      </p>
+      <p className="mt-4 text-sm text-text-faint">{t("solve.verifying")}</p>
     );
   }
 
@@ -387,7 +378,7 @@ function VerdictBadge({ verdict }: { verdict: Verdict | "checking" }) {
     return (
       <p className="mt-4 flex items-center gap-2 text-sm text-[var(--color-success)]">
         <ShieldCheck className="size-4 shrink-0" aria-hidden />
-        Recomputed independently with SymPy — the final value agrees.
+        {t("solve.verified")}
       </p>
     );
   }
@@ -395,17 +386,14 @@ function VerdictBadge({ verdict }: { verdict: Verdict | "checking" }) {
   if (verdict.status === "contradicted") {
     return (
       <p className="mt-4 rounded-xl border border-[var(--color-danger)] px-4 py-3 text-sm text-[var(--color-danger)]">
-        <strong>Do not trust this final value.</strong> Recomputing it
-        independently gave <span className="font-mono">{verdict.computed}</span>
-        . The reasoning above may still be sound — check the last step yourself.
+        <strong>{t("solve.contradictedLead")}</strong>
+        {t("solve.contradicted", { value: verdict.computed })}
       </p>
     );
   }
 
   return (
-    <p className="mt-4 text-sm text-text-faint">
-      This one could not be checked automatically.
-    </p>
+    <p className="mt-4 text-sm text-text-faint">{t("solve.unverified")}</p>
   );
 }
 
@@ -416,16 +404,16 @@ function PhotoStep({
   busy: boolean;
   onPhoto: (file: File) => void;
 }) {
+  const { t } = useT();
   const input = useRef<HTMLInputElement>(null);
 
   return (
     <div className="mx-auto max-w-lg text-center">
       <h1 className="font-display text-3xl font-light">
-        Photograph the exercise
+        {t("solve.photoTitle")}
       </h1>
       <p className="mt-3 leading-relaxed text-text-muted">
-        Include your own working if you have already started — that is how the
-        tutor finds where it broke.
+        {t("solve.photoBody")}
       </p>
 
       <input
@@ -446,17 +434,16 @@ function PhotoStep({
         className="mt-8 w-full"
       >
         <Camera className="size-[18px]" aria-hidden />
-        {busy ? "Reading the photo…" : "Choose or take a photo"}
+        {busy ? t("solve.reading") : t("solve.choosePhoto")}
       </Button>
 
-      <p className="mt-4 text-sm text-text-faint">
-        The photo is read once and never stored.
-      </p>
+      <p className="mt-4 text-sm text-text-faint">{t("solve.photoNote")}</p>
     </div>
   );
 }
 
 function ReviewCard({ review, working }: { review: Review; working: string }) {
+  const { t } = useT();
   const lines = working
     .split("\n")
     .map((l) => l.trim())
@@ -469,7 +456,7 @@ function ReviewCard({ review, working }: { review: Review; working: string }) {
     return (
       <div className="mt-5 rounded-2xl border border-[var(--color-success)] bg-surface p-5">
         <p className="font-medium text-[var(--color-success)]">
-          Every line holds up.
+          {t("solve.allCorrect")}
         </p>
         <p className="mt-2 leading-relaxed text-text-muted">{review.why}</p>
       </div>
@@ -479,7 +466,7 @@ function ReviewCard({ review, working }: { review: Review; working: string }) {
   return (
     <div className="mt-5 rounded-2xl border border-border bg-surface p-5">
       <p className="text-sm tracking-wide text-text-faint uppercase">
-        First line that breaks
+        {t("solve.firstBadLine")}
       </p>
       {index >= 0 && lines[index] && (
         <p className="mt-3 rounded-xl bg-bg-subtle px-4 py-3 font-mono text-sm">

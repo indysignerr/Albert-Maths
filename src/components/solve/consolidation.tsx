@@ -5,6 +5,7 @@ import { RefreshCw } from "lucide-react";
 import { api } from "@/lib/api";
 import { answersMatch, evaluateExpression } from "@/lib/verify";
 import { Tex } from "@/components/tex";
+import { useT } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 
 interface Exercise {
@@ -32,6 +33,7 @@ export function Consolidation({
   language: string;
   onPassed: () => void;
 }) {
+  const { t } = useT();
   const [exercise, setExercise] = useState<Exercise | null>(null);
   const [answer, setAnswer] = useState("");
   const [outcome, setOutcome] = useState<Outcome | null>(null);
@@ -53,7 +55,7 @@ export function Consolidation({
       setOutcome(null);
       setTruth(next.sympy ? await evaluateExpression(next.sympy) : null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not build one");
+      setError(err instanceof Error ? err.message : t("errors.generic"));
     } finally {
       setBusy(false);
     }
@@ -74,10 +76,9 @@ export function Consolidation({
   if (!exercise) {
     return (
       <div className="mt-5 rounded-2xl border border-dashed border-border p-5">
-        <h3 className="font-medium">Check it actually stuck</h3>
+        <h3 className="font-medium">{t("solve.consolidationTitle")}</h3>
         <p className="mt-2 leading-relaxed text-text-muted">
-          One short exercise that breaks the same way if the idea has not
-          landed.
+          {t("solve.consolidationBody")}
         </p>
         <Button
           variant="secondary"
@@ -86,7 +87,9 @@ export function Consolidation({
           className="mt-4"
         >
           <RefreshCw className="size-[18px]" aria-hidden />
-          {busy ? "Writing one…" : "Give me one"}
+          {busy
+            ? t("solve.consolidationWriting")
+            : t("solve.consolidationGenerate")}
         </Button>
         {error && (
           <p role="alert" className="mt-3 text-sm text-[var(--color-danger)]">
@@ -100,7 +103,7 @@ export function Consolidation({
   return (
     <div className="mt-5 rounded-2xl border border-border bg-surface p-5">
       <h3 className="text-sm tracking-wide text-text-faint uppercase">
-        Now this one
+        {t("solve.consolidationNow")}
       </h3>
       <p className="mt-3 text-lg">
         <Tex block raw>
@@ -114,7 +117,7 @@ export function Consolidation({
             htmlFor="consolidation-answer"
             className="mt-5 block text-sm font-medium"
           >
-            Your answer
+            {t("solve.yourAnswer")}
           </label>
           <div className="mt-2 flex gap-2">
             <input
@@ -128,35 +131,32 @@ export function Consolidation({
               onClick={check}
               disabled={!answer.trim() || outcome === "checking"}
             >
-              Check
+              {t("solve.check")}
             </Button>
           </div>
           <p className="mt-2 text-sm text-text-faint">
-            Write it the way you would type it: <code>1 - 2*exp(-1)</code>,{" "}
-            <code>pi/4</code>, <code>sqrt(2)/2</code>.
+            {t("solve.answerHint", {
+              examples: "1 - 2*exp(-1), pi/4, sqrt(2)/2",
+            })}
           </p>
         </>
       ) : (
-        <p className="mt-4 text-sm text-text-faint">
-          Work this one on paper — it has no single value to check against.
-        </p>
+        <p className="mt-4 text-sm text-text-faint">{t("solve.onPaper")}</p>
       )}
 
       {outcome === "passed" && (
         <p className="mt-4 text-[15px] text-[var(--color-success)]">
-          That is right. The idea landed.
+          {t("solve.passed")}
         </p>
       )}
       {outcome === "failed" && (
         <p className="mt-4 text-[15px] text-text-muted">
-          Not yet — and it is the same idea as before. Go back to the line you
-          got wrong and read it again.
+          {t("solve.failedAgain")}
         </p>
       )}
       {outcome === "unknown" && (
         <p className="mt-4 text-[15px] text-text-muted">
-          Could not read that. Try SymPy notation, like{" "}
-          <code>2*sin(2) + cos(2) - 1</code>.
+          {t("solve.unreadable", { example: "2*sin(2) + cos(2) - 1" })}
         </p>
       )}
 
@@ -166,7 +166,7 @@ export function Consolidation({
         disabled={busy}
         className="mt-4 text-sm text-text-muted underline underline-offset-4 hover:text-text"
       >
-        Another one
+        {t("solve.another")}
       </button>
     </div>
   );
