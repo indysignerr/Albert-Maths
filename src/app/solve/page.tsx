@@ -156,6 +156,7 @@ export default function SolvePage() {
     setError(null);
     try {
       const result = await api.review({ statement, lines });
+      const recovering = review?.verdict === "error";
       setReview(result);
 
       await supabase.from("attempts").insert({
@@ -165,6 +166,16 @@ export default function SolvePage() {
         error_step: result.first_bad_line,
         is_correct: result.verdict === "correct",
       });
+
+      // Understanding is a repair, not a first-time success: this counts only
+      // when a previous attempt on the same problem was broken.
+      if (recovering && result.verdict === "correct") {
+        await supabase.from("progress_events").insert({
+          profile_id: session!.user.id,
+          kind: "error_understood",
+          problem_id: problemId,
+        });
+      }
     } catch (err) {
       setError(
         err instanceof ApiError ? err.message : "Could not review that working",

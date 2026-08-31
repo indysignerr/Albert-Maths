@@ -110,6 +110,13 @@ export interface Database {
     Views: Record<string, never>;
     Functions: {
       join_class: { Args: { code: string }; Returns: string };
+      create_class: {
+        Args: { name: string; campus: Campus; cohort: string };
+        Returns: ClassRow;
+      };
+      class_member_count: { Args: { target_class: string }; Returns: number };
+      problems_today: { Args: Record<string, never>; Returns: number };
+      daily_problem_limit: { Args: Record<string, never>; Returns: number };
     };
     Enums: {
       app_role: AppRole;
