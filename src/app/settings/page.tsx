@@ -7,6 +7,7 @@ import { ArrowLeft, Download, TriangleAlert } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/lib/i18n";
+import { rememberDestination } from "@/lib/auth-redirect";
 import {
   CAMPUSES,
   TRACKS,
@@ -39,7 +40,10 @@ export default function SettingsPage() {
   const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
-    if (ready && !session) router.replace("/signin/");
+    if (ready && !session) {
+      rememberDestination(window.location.pathname);
+      router.replace("/signin/");
+    }
   }, [ready, session, router]);
 
   if (!ready || !profile) {

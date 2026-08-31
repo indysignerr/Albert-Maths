@@ -13,6 +13,7 @@ export type Profile = {
   track: Track | null;
   ui_locale: string;
   onboarded_at: string | null;
+  password_set_at: string | null;
   created_at: string;
 };
 

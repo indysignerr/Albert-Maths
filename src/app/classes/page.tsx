@@ -7,6 +7,7 @@ import { ArrowLeft, Plus, Users } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/lib/i18n";
+import { rememberDestination } from "@/lib/auth-redirect";
 import { CAMPUSES, type ClassRow } from "@/lib/database.types";
 import { AlbertLogo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -30,7 +31,10 @@ export default function ClassesPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (ready && !session) router.replace("/signin/");
+    if (ready && !session) {
+      rememberDestination(window.location.pathname);
+      router.replace("/signin/");
+    }
   }, [ready, session, router]);
 
   const loadClasses = useCallback(async () => {

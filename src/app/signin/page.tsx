@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { MailCheck } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
+import { claimDestination } from "@/lib/auth-redirect";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { AlbertLogo } from "@/components/brand/logo";
@@ -12,32 +14,58 @@ import { useT } from "@/lib/i18n";
 
 const SCHOOL_DOMAIN = "albertschool.com";
 
+type Mode = "signin" | "create" | "reset";
+
 export default function SignInPage() {
   const { t } = useT();
+  const router = useRouter();
+
+  const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function onSubmit(event: React.FormEvent) {
+  async function signInWithPassword(event: React.FormEvent) {
     event.preventDefault();
+    setBusy(true);
     setError(null);
 
-    // Who may sign up is decided in the database, which also holds the
-    // individual exceptions granted during development. Blocking here on the
-    // domain alone would lock out those accounts before the request is sent.
-    const address = email.trim().toLowerCase();
-    setStatus("sending");
-
-    const { error: authError } = await supabase.auth.signInWithOtp({
-      email: address,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback/` },
+    const { error: authError } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
     });
 
+    setBusy(false);
     if (authError) {
-      setStatus("idle");
-      // The sign-up trigger raises a database exception for a disallowed
-      // address, which Supabase surfaces as an opaque "Database error saving
-      // new user".
+      // Supabase returns the same message whether the address is unknown or the
+      // password is wrong, and that is the right behaviour — saying which would
+      // tell a stranger who has an account here.
+      setError(t("auth.wrongCredentials"));
+      return;
+    }
+    router.replace(claimDestination());
+  }
+
+  async function sendLink(event: React.FormEvent) {
+    event.preventDefault();
+    setBusy(true);
+    setError(null);
+
+    // Whether this creates an account or recovers one, the link lands in the
+    // same place: a page that sets a password. After that there are no more
+    // emails.
+    const { error: authError } = await supabase.auth.signInWithOtp({
+      email: email.trim().toLowerCase(),
+      options: {
+        shouldCreateUser: mode === "create",
+        emailRedirectTo: `${window.location.origin}/auth/callback/`,
+      },
+    });
+
+    setBusy(false);
+    if (authError) {
       setError(
         /not allowed to sign up|Database error saving new user/i.test(
           authError.message,
@@ -47,7 +75,14 @@ export default function SignInPage() {
       );
       return;
     }
-    setStatus("sent");
+    setSent(true);
+  }
+
+  function switchTo(next: Mode) {
+    setMode(next);
+    setError(null);
+    setSent(false);
+    setPassword("");
   }
 
   return (
@@ -60,35 +95,96 @@ export default function SignInPage() {
       </div>
 
       <div className="w-full max-w-sm rounded-2xl border border-border bg-surface p-8">
-        {status === "sent" ? (
+        {sent ? (
           <div className="text-center">
             <MailCheck className="mx-auto size-8 text-accent" aria-hidden />
             <h1 className="mt-5 font-display text-2xl font-light">
-              {t("signIn.sentTitle")}
+              {t("auth.linkSentTitle")}
             </h1>
             <p className="mt-3 text-[15px] leading-relaxed text-text-muted">
-              {t("signIn.sentBody", { email })}
+              {t("auth.linkSentBody", { email })}
             </p>
             <button
               type="button"
-              onClick={() => setStatus("idle")}
+              onClick={() => switchTo(mode)}
               className="mt-6 text-sm text-text-muted underline underline-offset-4 hover:text-text"
             >
-              {t("signIn.useAnother")}
+              {t("auth.useAnother")}
             </button>
           </div>
+        ) : mode === "signin" ? (
+          <>
+            <h1 className="font-display text-2xl font-light">
+              {t("auth.signInTitle")}
+            </h1>
+            <p className="mt-2 text-[15px] text-text-muted">
+              {t("auth.signInSubtitle")}
+            </p>
+
+            <form
+              onSubmit={signInWithPassword}
+              className="mt-7 flex flex-col gap-5"
+            >
+              <Field
+                label={t("auth.email")}
+                type="email"
+                name="email"
+                autoComplete="username"
+                required
+                placeholder={`you@${SCHOOL_DOMAIN}`}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Field
+                label={t("auth.password")}
+                type="password"
+                name="password"
+                // Tells the browser's password manager this is a returning
+                // sign-in, which is what makes it offer the saved entry.
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                error={error ?? undefined}
+              />
+              <Button type="submit" disabled={busy}>
+                {busy ? t("auth.signingIn") : t("auth.signIn")}
+              </Button>
+            </form>
+
+            <div className="mt-6 flex flex-col gap-2 text-sm">
+              <button
+                type="button"
+                onClick={() => switchTo("create")}
+                className="text-left text-accent underline underline-offset-4"
+              >
+                {t("auth.noAccountYet")}
+              </button>
+              <button
+                type="button"
+                onClick={() => switchTo("reset")}
+                className="text-left text-text-muted underline underline-offset-4 hover:text-text"
+              >
+                {t("auth.forgot")}
+              </button>
+            </div>
+          </>
         ) : (
           <>
             <h1 className="font-display text-2xl font-light">
-              {t("signIn.title")}
+              {t(mode === "create" ? "auth.createTitle" : "auth.resetTitle")}
             </h1>
-            <p className="mt-2 text-[15px] text-text-muted">
-              {t("signIn.subtitle")}
+            <p className="mt-2 text-[15px] leading-relaxed text-text-muted">
+              {t(
+                mode === "create"
+                  ? "auth.createSubtitle"
+                  : "auth.resetSubtitle",
+              )}
             </p>
 
-            <form onSubmit={onSubmit} className="mt-7 flex flex-col gap-5">
+            <form onSubmit={sendLink} className="mt-7 flex flex-col gap-5">
               <Field
-                label={t("signIn.emailLabel")}
+                label={t("auth.email")}
                 type="email"
                 autoComplete="email"
                 required
@@ -97,12 +193,18 @@ export default function SignInPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 error={error ?? undefined}
               />
-              <Button type="submit" disabled={status === "sending"}>
-                {status === "sending"
-                  ? t("signIn.sending")
-                  : t("signIn.submit")}
+              <Button type="submit" disabled={busy}>
+                {busy ? t("auth.sending") : t("auth.sendLink")}
               </Button>
             </form>
+
+            <button
+              type="button"
+              onClick={() => switchTo("signin")}
+              className="mt-6 text-sm text-accent underline underline-offset-4"
+            >
+              {t("auth.haveAccount")}
+            </button>
           </>
         )}
       </div>

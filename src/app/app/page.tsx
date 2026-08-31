@@ -13,6 +13,7 @@ import {
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/lib/i18n";
+import { rememberDestination } from "@/lib/auth-redirect";
 import type { Problem } from "@/lib/database.types";
 import { AlbertLogo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -40,8 +41,10 @@ export default function AppHome() {
 
   useEffect(() => {
     if (!ready) return;
-    if (!session) router.replace("/signin/");
-    else if (profile && !profile.onboarded_at) router.replace("/onboarding/");
+    if (!session) {
+      rememberDestination(window.location.pathname);
+      router.replace("/signin/");
+    } else if (profile && !profile.onboarded_at) router.replace("/onboarding/");
   }, [ready, session, profile, router]);
 
   const load = useCallback(async () => {

@@ -220,6 +220,42 @@ export const en = {
     campusLabel: "Campus",
   },
 
+  auth: {
+    signInTitle: "Sign in",
+    signInSubtitle: "Albert School students only.",
+    email: "School email",
+    password: "Password",
+    signIn: "Sign in",
+    signingIn: "Signing in…",
+    wrongCredentials: "That email and password do not match.",
+    noAccountYet: "First time here? Create your account",
+    haveAccount: "Already have a password? Sign in",
+    forgot: "Forgotten your password?",
+
+    createTitle: "Create your account",
+    createSubtitle:
+      "We send one link. You will not have to check your email again after that.",
+    sendLink: "Send me the link",
+    sending: "Sending…",
+    linkSentTitle: "Check your inbox",
+    linkSentBody:
+      "We sent a link to {email}. Open it and you will choose a password — after that you sign in straight from this page.",
+    useAnother: "Use a different address",
+
+    resetTitle: "Set a new password",
+    resetSubtitle: "We send one link. It takes you straight to a new password.",
+
+    setTitle: "Choose your password",
+    setSubtitle:
+      "Let your browser save it. That is the whole point — no more emails to sign in.",
+    newPassword: "Password",
+    confirmPassword: "Confirm password",
+    tooShort: "At least 8 characters.",
+    mismatch: "The two passwords do not match.",
+    setSubmit: "Save and continue",
+    saving: "Saving…",
+  },
+
   notions: {
     title: "Refresh a notion",
     subtitle: "For when you have forgotten how something works.",

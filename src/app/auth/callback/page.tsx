@@ -4,11 +4,16 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/lib/i18n";
+import { claimDestination } from "@/lib/auth-redirect";
 
 /**
  * The Supabase client is configured with detectSessionInUrl, so by the time the
  * provider reports ready the code in the URL has already been exchanged. All
  * this page decides is where to send the student next.
+ *
+ * An account without a password goes to set one — that is the whole reason the
+ * emailed link exists. After that, signing in is local and no further email is
+ * ever sent.
  */
 export default function AuthCallbackPage() {
   const { session, profile, ready } = useAuth();
@@ -21,7 +26,13 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     if (!ready || !session) return;
-    router.replace(profile?.onboarded_at ? "/app/" : "/onboarding/");
+    // Wait for the profile before deciding: routing on a null profile would
+    // send a returning student back through the password step.
+    if (!profile) return;
+
+    if (!profile.password_set_at) router.replace("/set-password/");
+    else if (!profile.onboarded_at) router.replace("/onboarding/");
+    else router.replace(claimDestination());
   }, [ready, session, profile, router]);
 
   return (

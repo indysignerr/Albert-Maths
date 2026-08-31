@@ -58,7 +58,11 @@ and Marseille, so content is shared across campuses.
 
 ## Accounts and data
 
-- Supabase auth, school email.
+- Supabase auth, school email. **Password accounts**: one emailed link at
+  sign-up leads to a page where the student chooses a password their browser can
+  save; every later sign-in is local, with no email. `profiles.password_set_at`
+  records that the step is done, because the client cannot read from
+  `auth.users` whether a password exists. The same link serves password reset.
 - Sign-up is gated by two tables: `allowed_email_domains` (seeded with
   `albertschool.com`) and `allowed_emails` for individual exceptions during
   development. **Every row in `allowed_emails` must be deleted before students

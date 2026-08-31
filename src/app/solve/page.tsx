@@ -19,6 +19,7 @@ import { verifyAnswer, type Verdict } from "@/lib/verify";
 import { Tex } from "@/components/tex";
 import { NotionChat } from "@/components/notion-chat";
 import { useT } from "@/lib/i18n";
+import { rememberDestination } from "@/lib/auth-redirect";
 import { TutorChat } from "@/components/solve/tutor-chat";
 import { Consolidation } from "@/components/solve/consolidation";
 import { Button } from "@/components/ui/button";
@@ -52,7 +53,10 @@ export default function SolvePage() {
   const [review, setReview] = useState<Review | null>(null);
 
   useEffect(() => {
-    if (ready && !session) router.replace("/signin/");
+    if (ready && !session) {
+      rememberDestination(window.location.pathname);
+      router.replace("/signin/");
+    }
   }, [ready, session, router]);
 
   // Drives the reflection countdown without re-rendering when nothing is pending.

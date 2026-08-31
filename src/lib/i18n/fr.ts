@@ -239,6 +239,43 @@ export const fr: PartialDictionary = {
     campusLabel: "Campus",
   },
 
+  auth: {
+    signInTitle: "Connexion",
+    signInSubtitle: "Réservé aux étudiants d’Albert School.",
+    email: "Adresse de l’école",
+    password: "Mot de passe",
+    signIn: "Se connecter",
+    signingIn: "Connexion…",
+    wrongCredentials: "Cette adresse et ce mot de passe ne correspondent pas.",
+    noAccountYet: "Première fois ? Crée ton compte",
+    haveAccount: "Tu as déjà un mot de passe ? Connecte-toi",
+    forgot: "Mot de passe oublié ?",
+
+    createTitle: "Crée ton compte",
+    createSubtitle:
+      "On envoie un seul lien. Ensuite, tu n’auras plus jamais à ouvrir ta boîte mail pour te connecter.",
+    sendLink: "Envoyer le lien",
+    sending: "Envoi…",
+    linkSentTitle: "Regarde ta boîte mail",
+    linkSentBody:
+      "Un lien a été envoyé à {email}. Ouvre-le et tu choisiras un mot de passe — ensuite tu te connectes directement depuis cette page.",
+    useAnother: "Utiliser une autre adresse",
+
+    resetTitle: "Nouveau mot de passe",
+    resetSubtitle:
+      "On envoie un lien. Il te mène directement à un nouveau mot de passe.",
+
+    setTitle: "Choisis ton mot de passe",
+    setSubtitle:
+      "Laisse ton navigateur l’enregistrer. C’est tout l’intérêt : fini les emails pour se connecter.",
+    newPassword: "Mot de passe",
+    confirmPassword: "Confirme le mot de passe",
+    tooShort: "8 caractères minimum.",
+    mismatch: "Les deux mots de passe ne correspondent pas.",
+    setSubmit: "Enregistrer et continuer",
+    saving: "Enregistrement…",
+  },
+
   notions: {
     title: "Revoir une notion",
     subtitle: "Pour quand tu as oublié comment quelque chose marche.",
