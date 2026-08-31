@@ -73,7 +73,8 @@ function En() {
       <h2>Who processes it</h2>
       <ul>
         <li>
-          <strong>Supabase Inc.</strong> — database and sign-in.
+          <strong>Supabase Inc.</strong> — database and sign-in. The database is
+          hosted in Frankfurt, Germany (<code>eu-central-1</code>).
         </li>
         <li>
           <strong>Mistral AI</strong> (Paris, France) — reads the photograph and
@@ -90,6 +91,13 @@ function En() {
         analytics, no tracking pixel and no third-party cookie. The only thing
         stored in your browser is your session, your chosen language and your
         light or dark preference.
+      </p>
+
+      <h2>Where it is stored</h2>
+      <p>
+        Everything stays inside the European Union: the database in Frankfurt,
+        the model in Paris. Cloudflare serves the site from the edge location
+        nearest you and holds no student data.
       </p>
 
       <h2>How long it is kept</h2>
@@ -189,7 +197,8 @@ function Fr() {
       <h2>Qui traite ces données</h2>
       <ul>
         <li>
-          <strong>Supabase Inc.</strong> — base de données et connexion.
+          <strong>Supabase Inc.</strong> — base de données et connexion. La base
+          est hébergée à Francfort, en Allemagne (<code>eu-central-1</code>).
         </li>
         <li>
           <strong>Mistral AI</strong> (Paris, France) — lit la photo et rédige
@@ -205,6 +214,13 @@ function Fr() {
         Rien n’est vendu, rien n’est transmis à des annonceurs. Aucune mesure
         d’audience, aucun pixel de suivi, aucun cookie tiers. Ton navigateur ne
         conserve que ta session, ta langue et ta préférence clair ou sombre.
+      </p>
+
+      <h2>Où sont stockées les données</h2>
+      <p>
+        Tout reste dans l’Union européenne : la base à Francfort, le modèle à
+        Paris. Cloudflare sert le site depuis le point de présence le plus proche
+        de toi et ne détient aucune donnée d’élève.
       </p>
 
       <h2>Durée de conservation</h2>
