@@ -76,8 +76,15 @@ Provider-agnostic by design — one interface, swappable backends.
    at any scale.
 3. Once school-funded: Kimi K2.6 (~$0.005 per exercise) or paid Mistral.
 
-Every numeric result is re-verified client-side with SymPy compiled to WebAssembly,
-so an arithmetic slip by the model never reaches the student as fact.
+Every final value in a full solution is recomputed from the problem statement by
+SymPy running as WebAssembly in the browser. The model supplies both a SymPy
+expression for the problem and its own answer; if the two disagree the solution
+is still shown, but labelled as unverified with the independently computed value
+beside it — the reasoning may be sound even when the arithmetic is not.
+
+This is not belt-and-braces. During prompt testing the model produced confidently
+wrong values more than once, and a student cannot tell the difference. Loading is
+deferred to the first check, since most sessions never reach a full solution.
 
 ## Platform
 

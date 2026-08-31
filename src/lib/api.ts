@@ -56,6 +56,11 @@ export interface Review {
   question_back: string;
 }
 
+export interface Check {
+  expression: string;
+  claimed: string;
+}
+
 export const api = {
   transcribe: (image: string) =>
     post<Transcription>("/api/transcribe", { image }),
@@ -65,7 +70,7 @@ export const api = {
     level: number;
     language: string;
     priorHints: string[];
-  }) => post<{ hint: string }>("/api/hint", args),
+  }) => post<{ hint: string; check: Check | null }>("/api/hint", args),
 
   review: (args: { statement: string; lines: string[] }) =>
     post<Review>("/api/review", args),

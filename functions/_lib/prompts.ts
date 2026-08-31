@@ -62,7 +62,21 @@ give less.
 Write in the requested language, in the second person, in at most four sentences
 (level 4 may be longer). Use LaTeX for mathematics, delimited by $...$.
 
-Return JSON only: {"hint": "..."}` + DELIMITER_RULE;
+Return JSON only:
+{
+  "hint": "...",
+  "check": null
+}
+
+At level 4 only, "check" carries the material for an independent verification of
+your final value:
+{"expression": "<SymPy expression computing the answer from the problem itself>",
+ "claimed": "<your final answer as a SymPy expression>"}
+
+Write both in SymPy syntax, not LaTeX: integrate(x*exp(-x), (x, 0, 1)) and
+1 - 2*exp(-1). Single letters are already symbols. If the answer is not an
+expression a computer algebra system can compare — a proof, a method, a written
+argument — set "check" to null rather than inventing one.` + DELIMITER_RULE;
 
 export const REVIEW_SYSTEM = `You are a maths tutor reviewing a student's own working.
 

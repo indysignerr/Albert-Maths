@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Camera, Lock, PencilLine } from "lucide-react";
+import { ArrowLeft, Camera, Lock, PencilLine, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/lib/supabase/client";
 import { api, ApiError, type Review, type Transcription } from "@/lib/api";
+import { verifyAnswer, type Verdict } from "@/lib/verify";
 import { Tex } from "@/components/tex";
 import { Button } from "@/components/ui/button";
 import { AlbertLogo } from "@/components/brand/logo";
@@ -35,6 +36,7 @@ export default function SolvePage() {
   const [error, setError] = useState<string | null>(null);
 
   const [hints, setHints] = useState<Record<number, string>>({});
+  const [verdict, setVerdict] = useState<Verdict | "checking" | null>(null);
   const [unlockedAt, setUnlockedAt] = useState<number>(0);
   const [now, setNow] = useState(() => Date.now());
 
@@ -120,7 +122,7 @@ export default function SolvePage() {
         );
       }
 
-      const { hint } = await api.hint({
+      const { hint, check } = await api.hint({
         statement,
         level,
         language: profile?.ui_locale ?? "en",
@@ -130,6 +132,13 @@ export default function SolvePage() {
       setHints((h) => ({ ...h, [level]: hint }));
       setUnlockedAt(Date.now());
       setNow(Date.now());
+
+      // The solution is shown either way; the badge says whether an independent
+      // computation agreed with it.
+      if (check) {
+        setVerdict("checking");
+        void verifyAnswer(check).then(setVerdict);
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Could not fetch that hint",
@@ -290,6 +299,10 @@ export default function SolvePage() {
                           </p>
                         )}
 
+                        {revealed && level === 4 && verdict && (
+                          <VerdictBadge verdict={verdict} />
+                        )}
+
                         {isNext && (
                           <div className="mt-4">
                             <Button
@@ -330,6 +343,45 @@ export default function SolvePage() {
         </div>
       </main>
     </div>
+  );
+}
+
+/**
+ * States the provenance of the check rather than a bare tick: a student should
+ * know the difference between "another system agreed" and "nobody checked".
+ */
+function VerdictBadge({ verdict }: { verdict: Verdict | "checking" }) {
+  if (verdict === "checking") {
+    return (
+      <p className="mt-4 text-sm text-text-faint">
+        Recomputing this independently…
+      </p>
+    );
+  }
+
+  if (verdict.status === "verified") {
+    return (
+      <p className="mt-4 flex items-center gap-2 text-sm text-[var(--color-success)]">
+        <ShieldCheck className="size-4 shrink-0" aria-hidden />
+        Recomputed independently with SymPy — the final value agrees.
+      </p>
+    );
+  }
+
+  if (verdict.status === "contradicted") {
+    return (
+      <p className="mt-4 rounded-xl border border-[var(--color-danger)] px-4 py-3 text-sm text-[var(--color-danger)]">
+        <strong>Do not trust this final value.</strong> Recomputing it
+        independently gave <span className="font-mono">{verdict.computed}</span>
+        . The reasoning above may still be sound — check the last step yourself.
+      </p>
+    );
+  }
+
+  return (
+    <p className="mt-4 text-sm text-text-faint">
+      This one could not be checked automatically.
+    </p>
   );
 }
 
