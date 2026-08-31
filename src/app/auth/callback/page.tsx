@@ -34,7 +34,7 @@ export default function AuthCallbackPage() {
           <p className="mt-3 text-text-muted">{t("signIn.expiredBody")}</p>
           <a
             href="/signin/"
-            className="mt-6 inline-block text-brand-500 underline underline-offset-4"
+            className="mt-6 inline-block text-accent underline underline-offset-4"
           >
             {t("signIn.requestNew")}
           </a>

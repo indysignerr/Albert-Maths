@@ -38,11 +38,16 @@ export function AlbertWordmark({ className }: { className?: string }) {
   );
 }
 
+/**
+ * The wordmark is dropped below 640px. At 375 it left no room for the theme
+ * toggle and the sign-in button, and the header overflowed the viewport by 29px;
+ * the mark on its own is still recognisably Albert.
+ */
 export function AlbertLogo({ className }: { className?: string }) {
   return (
     <span className={cn("flex items-center gap-2.5", className)}>
       <AlbertMark className="h-7 w-7 shrink-0" />
-      <AlbertWordmark />
+      <AlbertWordmark className="hidden sm:flex" />
     </span>
   );
 }

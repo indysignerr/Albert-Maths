@@ -179,7 +179,7 @@ export default function ClassesPage() {
                           {CAMPUSES.find((c) => c.value === row.campus)?.label}{" "}
                           · {t("classes.members", { n: counts[row.id] ?? 0 })}
                         </span>
-                        <span className="mt-1 block font-mono text-xs tracking-widest text-brand-500">
+                        <span className="mt-1 block font-mono text-xs tracking-widest text-accent">
                           {row.invite_code}
                         </span>
                       </button>

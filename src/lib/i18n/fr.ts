@@ -26,7 +26,10 @@ export const fr: PartialDictionary = {
     cancel: "Annuler",
     continue: "Continuer",
     language: "Langue",
-    theme: { toLight: "Passer au thème clair", toDark: "Passer au thème sombre" },
+    theme: {
+      toLight: "Passer au thème clair",
+      toDark: "Passer au thème sombre",
+    },
     disclaimer:
       "Albert Maths est un projet étudiant, sans lien avec Albert School.",
   },
@@ -38,7 +41,8 @@ export const fr: PartialDictionary = {
   },
 
   landing: {
-    badge: "Conçu pour Albert School · Paris · Milan · Madrid · Genève · Marseille",
+    badge:
+      "Conçu pour Albert School · Paris · Milan · Madrid · Genève · Marseille",
     titleBefore: "Trouve ",
     titleHighlight: "où",
     titleAfter: " tu t’es trompé.",
@@ -101,7 +105,8 @@ export const fr: PartialDictionary = {
     useAnother: "Utiliser une autre adresse",
     restricted: "Albert Maths est réservé aux adresses @{domain}.",
     expiredTitle: "Ce lien a expiré",
-    expiredBody: "Les liens de connexion sont à usage unique et de courte durée.",
+    expiredBody:
+      "Les liens de connexion sont à usage unique et de courte durée.",
     requestNew: "En demander un nouveau",
     signingIn: "Connexion en cours…",
   },
@@ -129,7 +134,8 @@ export const fr: PartialDictionary = {
     newProblem: "Photographier un exercice",
     newProblemBody: "Transcrit, puis travaillé un indice à la fois.",
     yourClass: "Ta classe",
-    yourClassBody: "Compare tes approches avec ceux qui font les mêmes exercices.",
+    yourClassBody:
+      "Compare tes approches avec ceux qui font les mêmes exercices.",
     recent: "Exercices récents",
     empty: "Rien pour l’instant",
     emptyBody:
@@ -175,7 +181,8 @@ export const fr: PartialDictionary = {
     firstBadLine: "Première ligne qui casse",
     allCorrect: "Toutes les lignes tiennent.",
     verifying: "Recalcul indépendant en cours…",
-    verified: "Recalculé indépendamment avec SymPy — la valeur finale concorde.",
+    verified:
+      "Recalculé indépendamment avec SymPy — la valeur finale concorde.",
     contradictedLead: "Ne fais pas confiance à cette valeur finale.",
     contradicted:
       " Le recalcul indépendant donne {value}. Le raisonnement ci-dessus peut rester valable — vérifie la dernière étape toi-même.",

@@ -25,7 +25,8 @@ export const en = {
   },
 
   landing: {
-    badge: "Built for Albert School · Paris · Milan · Madrid · Geneva · Marseille",
+    badge:
+      "Built for Albert School · Paris · Milan · Madrid · Geneva · Marseille",
     titleBefore: "Find out ",
     titleHighlight: "where",
     titleAfter: " you got it wrong.",
@@ -83,7 +84,8 @@ export const en = {
     submit: "Send me a sign-in link",
     sending: "Sending…",
     sentTitle: "Check your inbox",
-    sentBody: "We sent a sign-in link to {email}. Open it on this device and you are in — no password to remember.",
+    sentBody:
+      "We sent a sign-in link to {email}. Open it on this device and you are in — no password to remember.",
     useAnother: "Use a different address",
     restricted: "Albert Maths is limited to @{domain} addresses.",
     expiredTitle: "That link has expired",
@@ -127,7 +129,8 @@ export const en = {
     progressNote:
       "This counts mistakes you found and fixed — never solutions you looked at.",
     quotaLeft: "{n} exercises left today",
-    quotaNote: "The daily limit exists so this stays a place to think, not to scan a problem set.",
+    quotaNote:
+      "The daily limit exists so this stays a place to think, not to scan a problem set.",
     settings: "Settings",
   },
 
@@ -155,7 +158,8 @@ export const en = {
     waiting: "Think about it for {n}s",
     needsAttempt: "Submit your working first",
     needsAttemptNote: "The solution costs one honest attempt.",
-    outOfOrder: "Show your own working first — that is what unlocks the solution.",
+    outOfOrder:
+      "Show your own working first — that is what unlocks the solution.",
     firstBadLine: "First line that breaks",
     allCorrect: "Every line holds up.",
     verifying: "Recomputing this independently…",
@@ -179,7 +183,8 @@ export const en = {
     yourAnswer: "Your answer",
     check: "Check",
     answerHint: "Write it the way you would type it: {examples}.",
-    onPaper: "Work this one on paper — it has no single value to check against.",
+    onPaper:
+      "Work this one on paper — it has no single value to check against.",
     passed: "That is right. The idea landed.",
     failedAgain:
       "Not yet — and it is the same idea as before. Go back to the line you got wrong and read it again.",
@@ -225,7 +230,8 @@ export const en = {
     generic: "Something went wrong",
     sessionExpired: "Your session expired — sign in again",
     signInRequired: "Sign in to use the tutor",
-    tooBusy: "The tutor is handling too many requests right now. Try again in a moment.",
+    tooBusy:
+      "The tutor is handling too many requests right now. Try again in a moment.",
     unreadablePhoto:
       "Nothing readable in that photo. Try better light or a closer crop.",
   },

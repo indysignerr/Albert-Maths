@@ -49,10 +49,16 @@ export function LegalShell({
 
       <footer className="border-t border-border">
         <div className="mx-auto flex w-full max-w-3xl gap-6 px-5 py-8 text-sm text-text-faint sm:px-8">
-          <Link href="/privacy/" className="hover:text-text">
+          <Link
+            href="/privacy/"
+            className="flex h-11 items-center hover:text-text"
+          >
             {t("landing.privacy")}
           </Link>
-          <Link href="/terms/" className="hover:text-text">
+          <Link
+            href="/terms/"
+            className="flex h-11 items-center hover:text-text"
+          >
             {t("landing.terms")}
           </Link>
         </div>

@@ -125,7 +125,7 @@ export default function Home() {
                 const Icon = STEP_ICONS[i];
                 return (
                   <li key={step.title}>
-                    <span className="font-display text-sm text-brand-500 tabular-nums">
+                    <span className="font-display text-sm text-accent tabular-nums">
                       0{i + 1}
                     </span>
                     <Icon className="mt-4 size-6 text-text-muted" aria-hidden />
@@ -158,7 +158,7 @@ export default function Home() {
                     key={p.title}
                     className="rounded-2xl border border-border bg-surface/80 p-7"
                   >
-                    <Icon className="size-6 text-brand-500" aria-hidden />
+                    <Icon className="size-6 text-accent" aria-hidden />
                     <h3 className="mt-5 text-lg font-medium">{p.title}</h3>
                     <p className="mt-3 leading-relaxed text-text-muted">
                       {p.body}
@@ -223,11 +223,14 @@ export default function Home() {
           <div className="flex gap-6">
             <Link
               href="/privacy/"
-              className="transition-colors hover:text-text"
+              className="flex h-11 items-center transition-colors hover:text-text"
             >
               {t("landing.privacy")}
             </Link>
-            <Link href="/terms/" className="transition-colors hover:text-text">
+            <Link
+              href="/terms/"
+              className="flex h-11 items-center transition-colors hover:text-text"
+            >
               {t("landing.terms")}
             </Link>
           </div>

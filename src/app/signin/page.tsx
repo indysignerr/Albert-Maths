@@ -62,7 +62,7 @@ export default function SignInPage() {
       <div className="w-full max-w-sm rounded-2xl border border-border bg-surface p-8">
         {status === "sent" ? (
           <div className="text-center">
-            <MailCheck className="mx-auto size-8 text-brand-500" aria-hidden />
+            <MailCheck className="mx-auto size-8 text-accent" aria-hidden />
             <h1 className="mt-5 font-display text-2xl font-light">
               {t("signIn.sentTitle")}
             </h1>

@@ -122,7 +122,7 @@ export default function AppHome() {
               href="/solve/"
               className="rounded-2xl border border-border bg-surface p-7 transition-colors hover:border-brand-400"
             >
-              <Camera className="size-6 text-brand-500" aria-hidden />
+              <Camera className="size-6 text-accent" aria-hidden />
               <h2 className="mt-5 text-xl font-medium">
                 {t("dashboard.newProblem")}
               </h2>
@@ -140,7 +140,7 @@ export default function AppHome() {
               href="/classes/"
               className="rounded-2xl border border-border bg-surface p-7 transition-colors hover:border-brand-400"
             >
-              <MessagesSquare className="size-6 text-brand-500" aria-hidden />
+              <MessagesSquare className="size-6 text-accent" aria-hidden />
               <h2 className="mt-5 text-xl font-medium">
                 {t("dashboard.yourClass")}
               </h2>
@@ -218,7 +218,7 @@ export default function AppHome() {
 function Stat({ value, label }: { value: number; label: string }) {
   return (
     <div className="rounded-2xl border border-border bg-surface p-6">
-      <p className="font-display text-4xl font-light tabular-nums text-brand-500">
+      <p className="font-display text-4xl font-light tabular-nums text-accent">
         {value}
       </p>
       <p className="mt-1 text-[15px] text-text-muted">{label}</p>
