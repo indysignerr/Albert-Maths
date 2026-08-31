@@ -41,8 +41,8 @@ export const fr: PartialDictionary = {
     badge: "Conçu pour Albert School · Paris · Milan · Madrid · Genève · Marseille",
     titleBefore: "Trouve ",
     titleHighlight: "où",
-    titleAfter: " tu t'es trompé.",
-    lede: "Albert Maths ne fait pas tes devoirs. Il prend l'exercice qui te bloque, te conduit à la réponse un indice à la fois, puis lit ton propre brouillon pour te montrer l'étape exacte qui a cassé.",
+    titleAfter: " tu t’es trompé.",
+    lede: "Albert Maths ne fait pas tes devoirs. Il prend l’exercice qui te bloque, te conduit à la réponse un indice à la fois, puis lit ton propre brouillon pour te montrer l’étape exacte qui a cassé.",
     ctaPrimary: "Commencer par un exercice",
     ctaSecondary: "Pourquoi il refuse de répondre",
     reassurance:
@@ -50,28 +50,28 @@ export const fr: PartialDictionary = {
     stepsTitle: "Trois gestes, dans cet ordre",
     steps: [
       {
-        title: "Photographie l'énoncé",
-        body: "Prends l'exercice sur ta feuille ou ton écran. Il est transcrit en notation propre, que tu peux vérifier avant toute chose.",
+        title: "Photographie l’énoncé",
+        body: "Prends l’exercice sur ta feuille ou ton écran. Il est transcrit en notation propre, que tu peux vérifier avant toute chose.",
       },
       {
         title: "Avance avec des indices",
-        body: "Quatre niveaux, débloqués un par un : ce que la question demande vraiment, quel résultat s'applique, le premier pas, puis la solution complète.",
+        body: "Quatre niveaux, débloqués un par un : ce que la question demande vraiment, quel résultat s’applique, le premier pas, puis la solution complète.",
       },
       {
         title: "Montre ton brouillon",
-        body: "Photographie ce que tu as écrit. Tu obtiens la ligne qui casse et pourquoi — pas une réponse propre qui ne t'apprend rien.",
+        body: "Photographie ce que tu as écrit. Tu obtiens la ligne qui casse et pourquoi — pas une réponse propre qui ne t’apprend rien.",
       },
     ],
     principlesTitle: "Une machine à devoirs serait facile à construire.",
     principlesSubtitle: "Celle-ci est délibérément difficile à détourner.",
     principles: [
       {
-        title: "La réponse n'est jamais la première chose que tu vois",
-        body: "Les solutions restent verrouillées tant que tu n'as pas tenté ou parcouru les indices. L'outil est inutile pour copier, et c'est le but.",
+        title: "La réponse n’est jamais la première chose que tu vois",
+        body: "Les solutions restent verrouillées tant que tu n’as pas tenté ou parcouru les indices. L’outil est inutile pour copier, et c’est le but.",
       },
       {
-        title: "Il questionne avant d'expliquer",
-        body: "Le tuteur répond par des questions qui te font avancer. Quand tu te trompes, il te donne un exercice similaire pour vérifier que l'idée est passée.",
+        title: "Il questionne avant d’expliquer",
+        body: "Le tuteur répond par des questions qui te font avancer. Quand tu te trompes, il te donne un exercice similaire pour vérifier que l’idée est passée.",
       },
       {
         title: "Vous continuez à vous parler",
@@ -80,24 +80,24 @@ export const fr: PartialDictionary = {
     ],
     classesTitle: "Ta classe, ton campus, un seul programme",
     classesBody1:
-      "Rejoins avec un code et tu arrives dans un canal avec ceux qui font les mêmes exercices. Comparez vos approches, poste l'étape qui te bloque, vois comment un autre l'a formulée. Chacun apparaît sous son prénom — pas de meute anonyme, et les messages abusifs sont filtrés à l'entrée.",
+      "Rejoins avec un code et tu arrives dans un canal avec ceux qui font les mêmes exercices. Comparez vos approches, poste l’étape qui te bloque, vois comment un autre l’a formulée. Chacun apparaît sous son prénom — pas de meute anonyme, et les messages abusifs sont filtrés à l’entrée.",
     classesBody2:
-      "Milan, Paris, Madrid, Genève et Marseille suivent le même cursus : une question posée sur un campus mérite d'être lue sur tous les autres.",
-    ctaTitle: "Apporte l'exercice que tu évites depuis une semaine.",
-    ctaButton: "Se connecter avec l'adresse de l'école",
+      "Milan, Paris, Madrid, Genève et Marseille suivent le même cursus : une question posée sur un campus mérite d’être lue sur tous les autres.",
+    ctaTitle: "Apporte l’exercice que tu évites depuis une semaine.",
+    ctaButton: "Se connecter avec l’adresse de l’école",
     privacy: "Confidentialité",
     terms: "Conditions",
   },
 
   signIn: {
     title: "Connexion",
-    subtitle: "Réservé aux étudiants d'Albert School.",
-    emailLabel: "Adresse de l'école",
+    subtitle: "Réservé aux étudiants d’Albert School.",
+    emailLabel: "Adresse de l’école",
     submit: "Envoyer un lien de connexion",
     sending: "Envoi…",
     sentTitle: "Vérifie ta boîte mail",
     sentBody:
-      "Nous avons envoyé un lien de connexion à {email}. Ouvre-le sur cet appareil et c'est fait — aucun mot de passe à retenir.",
+      "Nous avons envoyé un lien de connexion à {email}. Ouvre-le sur cet appareil et c’est fait — aucun mot de passe à retenir.",
     useAnother: "Utiliser une autre adresse",
     restricted: "Albert Maths est réservé aux adresses @{domain}.",
     expiredTitle: "Ce lien a expiré",
@@ -108,7 +108,7 @@ export const fr: PartialDictionary = {
 
   onboarding: {
     title: "Configure ton compte",
-    subtitle: "Tes camarades voient ton prénom et une initiale — rien d'autre.",
+    subtitle: "Tes camarades voient ton prénom et une initiale — rien d’autre.",
     firstName: "Prénom",
     initial: "Initiale",
     campus: "Campus",
@@ -125,35 +125,35 @@ export const fr: PartialDictionary = {
   dashboard: {
     greeting: "Bonjour {name}.",
     greetingAnonymous: "Bonjour.",
-    prompt: "Qu'est-ce qui te bloque ?",
+    prompt: "Qu’est-ce qui te bloque ?",
     newProblem: "Photographier un exercice",
     newProblemBody: "Transcrit, puis travaillé un indice à la fois.",
     yourClass: "Ta classe",
     yourClassBody: "Compare tes approches avec ceux qui font les mêmes exercices.",
     recent: "Exercices récents",
-    empty: "Rien pour l'instant",
+    empty: "Rien pour l’instant",
     emptyBody:
-      "Dès que tu commenceras à travailler des exercices, ceux que tu as ratés puis compris s'accumuleront ici.",
+      "Dès que tu commenceras à travailler des exercices, ceux que tu as ratés puis compris s’accumuleront ici.",
     resume: "Ouvrir",
     progressTitle: "Ce que tu as compris",
     errorsUnderstood: "erreurs comprises",
     consolidationsPassed: "exercices de contrôle réussis",
     progressNote:
       "On compte les erreurs que tu as trouvées et corrigées — jamais les solutions consultées.",
-    quotaLeft: "{n} exercices restants aujourd'hui",
+    quotaLeft: "{n} exercices restants aujourd’hui",
     quotaNote:
-      "La limite quotidienne existe pour que ça reste un endroit où réfléchir, pas où scanner une feuille d'exercices.",
+      "La limite quotidienne existe pour que ça reste un endroit où réfléchir, pas où scanner une feuille d’exercices.",
     settings: "Paramètres",
   },
 
   solve: {
-    photoTitle: "Photographie l'exercice",
+    photoTitle: "Photographie l’exercice",
     photoBody:
-      "Inclus ton brouillon si tu as déjà commencé — c'est comme ça que le tuteur trouve où ça a cassé.",
+      "Inclus ton brouillon si tu as déjà commencé — c’est comme ça que le tuteur trouve où ça a cassé.",
     choosePhoto: "Choisir ou prendre une photo",
     reading: "Lecture de la photo…",
     photoNote: "La photo est lue une fois et jamais conservée.",
-    exercise: "L'énoncé",
+    exercise: "L’énoncé",
     fixTranscription: "Mal transcrit ? Corrige-le",
     yourWorking: "Ton brouillon",
     workingPlaceholder: "Une étape par ligne.",
@@ -162,16 +162,16 @@ export const fr: PartialDictionary = {
     hints: "Indices",
     levels: [
       "Ce qui est vraiment demandé",
-      "Quel résultat s'applique",
+      "Quel résultat s’applique",
       "La première étape",
       "La solution complète",
     ],
-    unlock: "Débloquer l'indice {n}",
+    unlock: "Débloquer l’indice {n}",
     waiting: "Réfléchis-y {n} s",
-    needsAttempt: "Soumets d'abord ton brouillon",
+    needsAttempt: "Soumets d’abord ton brouillon",
     needsAttemptNote: "La solution coûte une tentative honnête.",
     outOfOrder:
-      "Montre d'abord ton propre brouillon — c'est ce qui déverrouille la solution.",
+      "Montre d’abord ton propre brouillon — c’est ce qui déverrouille la solution.",
     firstBadLine: "Première ligne qui casse",
     allCorrect: "Toutes les lignes tiennent.",
     verifying: "Recalcul indépendant en cours…",
@@ -179,27 +179,27 @@ export const fr: PartialDictionary = {
     contradictedLead: "Ne fais pas confiance à cette valeur finale.",
     contradicted:
       " Le recalcul indépendant donne {value}. Le raisonnement ci-dessus peut rester valable — vérifie la dernière étape toi-même.",
-    unverified: "Celui-ci n'a pas pu être vérifié automatiquement.",
+    unverified: "Celui-ci n’a pas pu être vérifié automatiquement.",
     chatTitle: "En discuter",
     chatEmpty:
-      "Demande ce qui te bloque vraiment. Le tuteur répond par des questions — il ne te donnera pas l'étape, mais il te dira immédiatement si ce que tu as écrit est faux.",
+      "Demande ce qui te bloque vraiment. Le tuteur répond par des questions — il ne te donnera pas l’étape, mais il te dira immédiatement si ce que tu as écrit est faux.",
     chatPlaceholder: "Pourquoi cette étape ne marche pas ?",
     chatSend: "Envoyer",
     chatThinking: "Réflexion…",
-    consolidationTitle: "Vérifie que c'est passé",
+    consolidationTitle: "Vérifie que c’est passé",
     consolidationBody:
-      "Un exercice court qui casse de la même façon si l'idée n'est pas acquise.",
-    consolidationGenerate: "Donne-m'en un",
+      "Un exercice court qui casse de la même façon si l’idée n’est pas acquise.",
+    consolidationGenerate: "Donne-m’en un",
     consolidationWriting: "Rédaction…",
     consolidationNow: "Maintenant celui-ci",
     yourAnswer: "Ta réponse",
     check: "Vérifier",
     answerHint: "Écris-la comme tu la taperais : {examples}.",
     onPaper:
-      "Celui-ci se fait sur papier — il n'a pas de valeur unique à comparer.",
-    passed: "C'est juste. L'idée est passée.",
+      "Celui-ci se fait sur papier — il n’a pas de valeur unique à comparer.",
+    passed: "C’est juste. L’idée est passée.",
     failedAgain:
-      "Pas encore — et c'est la même idée qu'avant. Retourne à la ligne que tu avais ratée et relis-la.",
+      "Pas encore — et c’est la même idée qu’avant. Retourne à la ligne que tu avais ratée et relis-la.",
     unreadable: "Impossible à lire. Essaie la notation SymPy, comme {example}.",
     another: "Un autre",
     quotaReached:
@@ -218,9 +218,9 @@ export const fr: PartialDictionary = {
     createName: "Nom de la classe",
     createSubmit: "Créer",
     created: "Créée. Partage ce code avec ta classe :",
-    none: "Tu n'es dans aucune classe",
+    none: "Tu n’es dans aucune classe",
     noneBody:
-      "Rejoins avec le code de quelqu'un de ta promo, ou crée-en une et partage le code.",
+      "Rejoins avec le code de quelqu’un de ta promo, ou crée-en une et partage le code.",
     members: "{n} membres",
     open: "Ouvrir",
     leave: "Quitter",
@@ -228,13 +228,13 @@ export const fr: PartialDictionary = {
     send: "Envoyer",
     empty: "Aucun message. Sois le premier à demander.",
     blocked:
-      "Ce message n'a pas été envoyé. Reste sur les maths — les insultes et attaques personnelles sont bloquées.",
+      "Ce message n’a pas été envoyé. Reste sur les maths — les insultes et attaques personnelles sont bloquées.",
     campusLabel: "Campus",
   },
 
   legal: {
     privacyTitle: "Confidentialité",
-    termsTitle: "Conditions d'utilisation",
+    termsTitle: "Conditions d’utilisation",
     lastUpdated: "Dernière mise à jour : {date}",
   },
 

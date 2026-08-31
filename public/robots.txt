@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Signed-in surfaces hold student work; there is nothing here for a crawler.
+Disallow: /app/
+Disallow: /solve/
+Disallow: /classes/
+Disallow: /onboarding/
+Disallow: /auth/
+
+Sitemap: https://albert-maths.pages.dev/sitemap.xml

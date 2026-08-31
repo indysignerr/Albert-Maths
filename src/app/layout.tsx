@@ -3,6 +3,7 @@ import { Outfit, Work_Sans } from "next/font/google";
 import { AuthProvider } from "@/lib/auth-context";
 import { LocaleProvider } from "@/lib/i18n/provider";
 import { ThemeScript } from "@/components/theme-script";
+import { ServiceWorker } from "@/components/service-worker";
 import "./globals.css";
 
 /**
@@ -39,6 +40,13 @@ export const metadata: Metadata = {
     title: "Albert Maths",
     description:
       "Guided maths practice for Albert School students. Hints before answers, always.",
+    images: [{ url: "/og.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Albert Maths",
+    description: "Hints before answers. Always.",
+    images: ["/og.png"],
   },
   robots: { index: true, follow: true },
   manifest: "/site.webmanifest",
@@ -59,6 +67,30 @@ export const viewport: Viewport = {
   ],
 };
 
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@type": "LearningResource",
+  name: "Albert Maths",
+  description:
+    "A guided maths tutor that locates the step where a student's reasoning broke, instead of handing over the answer.",
+  url: "https://albert-maths.pages.dev",
+  inLanguage: ["en", "fr"],
+  isAccessibleForFree: true,
+  learningResourceType: "Tutoring service",
+  educationalLevel: "Undergraduate",
+  teaches: [
+    "Algebra",
+    "Analysis",
+    "Probability",
+    "Statistics",
+    "Matrix decomposition",
+  ],
+  audience: {
+    "@type": "EducationalAudience",
+    educationalRole: "student",
+  },
+} as const;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -68,8 +100,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <ThemeScript />
+        <script
+          type="application/ld+json"
+          // A learning tool, described as one: the structured data says what it
+          // teaches and who for, not just that a website exists.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
+        />
       </head>
       <body className="noise flex min-h-full flex-col bg-bg text-text">
+        <ServiceWorker />
         <AuthProvider>
           <LocaleProvider>{children}</LocaleProvider>
         </AuthProvider>
