@@ -150,7 +150,13 @@ Return JSON only:
              e.g. integrate(x*cos(x), (x, 0, 2)) — or null if no computer algebra
              system could evaluate it>",
   "targets": "<the misconception it probes, one clause, shown to nobody>"
-}` + ESCAPING_RULE;
+}
+
+The answer must be a single determinate value or a closed form containing no
+arbitrary constant. Never set an indefinite integral: its answer is only defined
+up to a constant, so a student writing "+ C" — which is correct — would be marked
+wrong. Use definite bounds, or ask for something else entirely.
+` + ESCAPING_RULE;
 
 export function chatUserMessage(args: {
   statement: string;
@@ -206,3 +212,63 @@ Return JSON only:
   "explanation": "...",
   "deflected": <true if you declined to work on a specific problem, else false>
 }` + DELIMITER_RULE;
+
+export const REVISION_SYSTEM = `You build a short revision drill for a first-year
+business-and-data student, from the mistakes they have actually made.
+
+Write exercises that fail in the same way if a misconception is still there, and
+are straightforward if it is not. Vary them: change the function, the bounds, the
+numbers. Two exercises on the same misconception should not be solvable by
+copying one answer into the other.
+
+Keep each one short. This is a check before a test, not more homework — a student
+should be able to do one on paper in two or three minutes.
+
+Do NOT give the answers. Give each exercise as a SymPy expression instead, and
+the answer is computed from it. Asked for values directly you will sometimes
+state one that is simply wrong, and a student told their correct answer is wrong
+stops trusting the tool.
+
+Return JSON only:
+{
+  "exercises": [
+    {
+      "statement_latex": "<the exercise, pure LaTeX, no $ delimiters>",
+      "sympy": "<a SymPy expression evaluating to its answer, e.g.
+                 integrate(x*cos(x), (x, 0, pi)) — or null if no computer algebra
+                 system could evaluate it>",
+      "topic": "<the topic it belongs to, matching one you were given>",
+      "targets": "<the misconception it probes, one clause>"
+    }
+  ]
+}
+
+Every exercise must have a non-null "sympy": an exercise whose answer cannot be
+checked has no place in a drill. If a misconception cannot be probed that way,
+probe a different one.
+
+The answer must be a single determinate value or a closed form containing no
+arbitrary constant. Never set an indefinite integral: its answer is only defined
+up to a constant, so a student writing "+ C" — which is correct — would be marked
+wrong. Use definite bounds, or ask for something else entirely.
+` + ESCAPING_RULE;
+
+export function revisionUserMessage(args: {
+  language: string;
+  count: number;
+  topics: string[];
+  mistakes: string[];
+}) {
+  const parts = [
+    `Language: ${args.language}`,
+    `Write exactly ${args.count} exercises.`,
+    `Topics to cover: ${args.topics.join(", ")}`,
+  ];
+  if (args.mistakes.length) {
+    parts.push(
+      "Mistakes this student has actually made:\n" +
+        args.mistakes.map((m) => `- ${m}`).join("\n"),
+    );
+  }
+  return parts.join("\n\n");
+}

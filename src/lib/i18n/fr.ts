@@ -213,6 +213,36 @@ export const fr: PartialDictionary = {
       "Tu as atteint la limite du jour. Reviens demain — ou continue un exercice déjà commencé.",
   },
 
+  revise: {
+    title: "Préparer un contrôle",
+    subtitle: "Une série courte, construite à partir des erreurs que tu as réellement faites.",
+    pickTopics: "Le contrôle porte sur quoi ?",
+    noHistory: "Rien à exploiter pour l’instant",
+    noHistoryBody:
+      "Cette série se fabrique à partir des exercices que tu as ratés. Travaille quelques problèmes d’abord et reviens — elle aura de quoi viser.",
+    weakestFirst: "Choisis parce que tu t’es déjà trompé dessus",
+    start: "Commencer",
+    building: "Rédaction de tes exercices…",
+    question: "Question {n} sur {total}",
+    yourAnswer: "Ta réponse",
+    answerHint: "Notation SymPy : {examples}",
+    check: "Vérifier",
+    checking: "Vérification…",
+    correct: "Juste.",
+    wrong: "Pas juste.",
+    unreadable: "Impossible à lire. Essaie {example}.",
+    next: "Suivant",
+    finish: "Voir le bilan",
+    reportTitle: "Où tu en es",
+    scoreLine: "{correct} sur {total}",
+    holds: "acquis",
+    shaky: "pas encore",
+    reportNote:
+      "C’est un instantané, pas une note. Ce qu’il te dit, c’est quelle notion rouvrir ce soir.",
+    again: "Une autre série",
+    backToApp: "Retour",
+  },
+
   classes: {
     title: "Classes",
     subtitle: "Ceux qui font les mêmes exercices que toi.",

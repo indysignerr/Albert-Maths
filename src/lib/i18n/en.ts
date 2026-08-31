@@ -194,6 +194,36 @@ export const en = {
       "You have reached today's limit. Come back tomorrow — or keep working on an exercise you already started.",
   },
 
+  revise: {
+    title: "Prepare for a test",
+    subtitle: "A short drill built from the mistakes you have actually made.",
+    pickTopics: "What is the test on?",
+    noHistory: "Nothing to build from yet",
+    noHistoryBody:
+      "This drill is made from exercises you got wrong. Work through a few problems first and come back — it will have something to aim at.",
+    weakestFirst: "Chosen because you got these wrong before",
+    start: "Start the drill",
+    building: "Writing your exercises…",
+    question: "Question {n} of {total}",
+    yourAnswer: "Your answer",
+    answerHint: "SymPy notation: {examples}",
+    check: "Check",
+    checking: "Checking…",
+    correct: "Correct.",
+    wrong: "Not right.",
+    unreadable: "Could not read that. Try {example}.",
+    next: "Next",
+    finish: "See the result",
+    reportTitle: "Where you stand",
+    scoreLine: "{correct} of {total}",
+    holds: "holds",
+    shaky: "not yet",
+    reportNote:
+      "This is a snapshot, not a grade. What it tells you is which notion to reopen tonight.",
+    again: "Another drill",
+    backToApp: "Back",
+  },
+
   classes: {
     title: "Classes",
     subtitle: "The people sitting the same exercises as you.",

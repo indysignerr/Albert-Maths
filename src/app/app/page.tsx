@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Camera,
+  GraduationCap,
   LogOut,
   MessagesSquare,
   Settings,
@@ -134,7 +135,7 @@ export default function AppHome() {
             {t("dashboard.prompt")}
           </p>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+          <div className="mt-10 grid gap-5 sm:grid-cols-3">
             <Link
               href="/solve/"
               className="rounded-2xl border border-border bg-surface p-7 transition-colors hover:border-brand-400"
@@ -151,6 +152,17 @@ export default function AppHome() {
                   {t("dashboard.quotaLeft", { n: quotaLeft })}
                 </p>
               )}
+            </Link>
+
+            <Link
+              href="/revise/"
+              className="rounded-2xl border border-border bg-surface p-7 transition-colors hover:border-brand-400"
+            >
+              <GraduationCap className="size-6 text-accent" aria-hidden />
+              <h2 className="mt-5 text-xl font-medium">{t("revise.title")}</h2>
+              <p className="mt-2 leading-relaxed text-text-muted">
+                {t("revise.subtitle")}
+              </p>
             </Link>
 
             <Link

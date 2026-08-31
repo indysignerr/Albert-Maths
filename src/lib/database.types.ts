@@ -71,6 +71,16 @@ export type TutorMessage = {
   created_at: string;
 };
 
+export type RevisionSession = {
+  id: string;
+  profile_id: string;
+  topics: string[];
+  total: number;
+  correct: number;
+  results: { topic: string; correct: boolean }[];
+  created_at: string;
+};
+
 export type ProgressEvent = {
   id: string;
   profile_id: string;
@@ -114,6 +124,7 @@ export interface Database {
       attempts: Table<Attempt>;
       tutor_messages: Table<TutorMessage>;
       progress_events: Table<ProgressEvent>;
+      revision_sessions: Table<RevisionSession>;
       channel_messages: Table<ChannelMessage>;
     };
     Views: Record<string, never>;

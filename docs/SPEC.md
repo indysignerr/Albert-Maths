@@ -16,6 +16,13 @@ Help Albert School students find and understand their own mistakes. Explicitly
 - A separate optional mode explains the underlying notion without touching the exercise.
 - The student can photograph their own working; the tutor localises the failing step.
 - After a confirmed error, a similar exercise is generated to check understanding.
+- A revision drill before a test is built from the student's own wrong attempts,
+  not from a bulk upload of the teacher's exercise sheet — nobody photographs
+  thirty exercises on a Sunday evening, and the app already knows which ones
+  broke. Answers are written out and checked symbolically, never multiple
+  choice: an MCQ can be guessed and, more to the point, it cannot show where the
+  reasoning went wrong, which is the one thing this tool is for. The report is
+  per notion rather than a score.
 - The chat tutor is Socratic: it replies with questions that move the student forward.
 - A short reflection delay sits between hint levels.
 - A daily cap on new exercises discourages bulk-scanning a problem set.

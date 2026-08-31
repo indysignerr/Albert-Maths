@@ -93,6 +93,21 @@ export const api = {
       args,
     ),
 
+  revision: (args: {
+    topics: string[];
+    mistakes: string[];
+    count: number;
+    language: string;
+  }) =>
+    post<{
+      exercises: {
+        statement_latex: string;
+        sympy: string;
+        topic: string;
+        targets: string;
+      }[];
+    }>("/api/revision", args),
+
   consolidate: (args: {
     statement: string;
     misconception: string;
