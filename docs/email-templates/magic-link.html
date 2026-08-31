@@ -21,9 +21,20 @@
           <td style="background:#202448;padding:26px 32px;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="padding-right:12px;">
-                  <img src="https://albert-maths.pages.dev/favicon-48x48.png" width="30" height="30" alt=""
-                       style="display:block;border-radius:7px;">
+                <!--
+                  The mark is drawn, not fetched. Gmail, Outlook and Apple Mail
+                  all block remote images until the reader asks for them, so an
+                  <img> logo shows as a broken box to most recipients on first
+                  open. Outlook on Windows ignores border-radius and will render
+                  a square — acceptable degradation, and still on-brand.
+                -->
+                <td style="padding-right:13px;" valign="middle">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td width="26" height="26"
+                          style="width:26px;height:26px;background:#74beea;border-radius:50%;font-size:0;line-height:0;">&nbsp;</td>
+                    </tr>
+                  </table>
                 </td>
                 <td style="color:#ffffff;font-size:17px;letter-spacing:1px;">
                   <strong style="font-weight:700;">ALBERT</strong>
