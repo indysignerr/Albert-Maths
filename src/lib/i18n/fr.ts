@@ -239,6 +239,32 @@ export const fr: PartialDictionary = {
     campusLabel: "Campus",
   },
 
+  settings: {
+    title: "Paramètres",
+    profile: "Ton profil",
+    profileNote: "Tes camarades voient ton prénom et une initiale.",
+    appearance: "Apparence",
+    themeLabel: "Thème",
+    themeLight: "Clair",
+    themeDark: "Sombre",
+    saved: "Enregistré",
+    yourData: "Tes données",
+    exportTitle: "Télécharger tout ce qui est conservé sur toi",
+    exportBody:
+      "Un fichier JSON avec ton profil, chaque exercice, chaque tentative, chaque message. Rien n’est omis.",
+    exportButton: "Télécharger mes données",
+    exporting: "Préparation…",
+    deleteTitle: "Supprimer ton compte",
+    deleteBody:
+      "Cela supprime ton profil, tes exercices, tes tentatives, ta progression et les messages que tu as postés dans les canaux de classe. C’est irréversible et il n’existe aucune sauvegarde.",
+    deleteButton: "Supprimer mon compte",
+    deleteConfirmPrompt: "Tape {word} pour confirmer.",
+    deleteConfirmWord: "SUPPRIMER",
+    deleteConfirmButton: "Supprimer définitivement",
+    deleting: "Suppression…",
+    deleteFailed: "La suppression a échoué. Réessaie, ou écris-nous.",
+  },
+
   legal: {
     privacyTitle: "Confidentialité",
     termsTitle: "Conditions d’utilisation",

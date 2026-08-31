@@ -3,7 +3,13 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Camera, LogOut, MessagesSquare, Sparkles } from "lucide-react";
+import {
+  Camera,
+  LogOut,
+  MessagesSquare,
+  Settings,
+  Sparkles,
+} from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/lib/i18n";
@@ -92,6 +98,13 @@ export default function AppHome() {
           <div className="flex items-center gap-2">
             <LanguagePicker className="hidden sm:block" />
             <ThemeToggle />
+            <Link
+              href="/settings/"
+              aria-label={t("dashboard.settings")}
+              className="grid size-11 place-items-center rounded-full border border-border text-text-muted transition-colors hover:border-border-strong hover:text-text"
+            >
+              <Settings className="size-[18px]" aria-hidden />
+            </Link>
             <Button
               variant="ghost"
               onClick={async () => {

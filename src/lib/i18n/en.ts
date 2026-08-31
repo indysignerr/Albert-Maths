@@ -220,6 +220,32 @@ export const en = {
     campusLabel: "Campus",
   },
 
+  settings: {
+    title: "Settings",
+    profile: "Your profile",
+    profileNote: "Classmates see your first name and one initial.",
+    appearance: "Appearance",
+    themeLabel: "Theme",
+    themeLight: "Light",
+    themeDark: "Dark",
+    saved: "Saved",
+    yourData: "Your data",
+    exportTitle: "Download everything held about you",
+    exportBody:
+      "One JSON file with your profile, every exercise, every attempt, every message. Nothing is left out.",
+    exportButton: "Download my data",
+    exporting: "Preparing…",
+    deleteTitle: "Delete your account",
+    deleteBody:
+      "This removes your profile, your exercises, your attempts, your progress and the messages you posted in class channels. It cannot be undone and there is no backup to restore from.",
+    deleteButton: "Delete my account",
+    deleteConfirmPrompt: "Type {word} to confirm.",
+    deleteConfirmWord: "DELETE",
+    deleteConfirmButton: "Delete permanently",
+    deleting: "Deleting…",
+    deleteFailed: "Could not delete the account. Try again, or write to us.",
+  },
+
   legal: {
     privacyTitle: "Privacy",
     termsTitle: "Terms",

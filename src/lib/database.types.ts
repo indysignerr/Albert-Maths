@@ -117,6 +117,8 @@ export interface Database {
       class_member_count: { Args: { target_class: string }; Returns: number };
       problems_today: { Args: Record<string, never>; Returns: number };
       daily_problem_limit: { Args: Record<string, never>; Returns: number };
+      delete_own_account: { Args: Record<string, never>; Returns: null };
+      export_own_data: { Args: Record<string, never>; Returns: unknown };
     };
     Enums: {
       app_role: AppRole;

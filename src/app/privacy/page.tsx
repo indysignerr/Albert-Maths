@@ -102,9 +102,11 @@ function En() {
 
       <h2>How long it is kept</h2>
       <p>
-        Until you ask for it to be deleted. Write to {CONTACT} from your school
-        address and your account and everything attached to it is removed. Class
-        messages you posted are removed with it.
+        Until you delete it. <strong>Settings → Delete your account</strong>
+        removes your profile, your exercises, your attempts, your progress and
+        the messages you posted in class channels — immediately, with no request
+        to approve and no copy kept. If you would rather it were done for you,
+        write to {CONTACT}.
       </p>
 
       <h2>Your rights</h2>
@@ -219,15 +221,17 @@ function Fr() {
       <h2>Où sont stockées les données</h2>
       <p>
         Tout reste dans l’Union européenne : la base à Francfort, le modèle à
-        Paris. Cloudflare sert le site depuis le point de présence le plus proche
-        de toi et ne détient aucune donnée d’élève.
+        Paris. Cloudflare sert le site depuis le point de présence le plus
+        proche de toi et ne détient aucune donnée d’élève.
       </p>
 
       <h2>Durée de conservation</h2>
       <p>
-        Jusqu’à ce que tu demandes la suppression. Écris à {CONTACT} depuis ton
-        adresse de l’école : ton compte et tout ce qui y est rattaché sont
-        supprimés, y compris les messages que tu as postés.
+        Jusqu’à ce que tu les supprimes. <strong>Paramètres → Supprimer mon
+        compte</strong> efface ton profil, tes exercices, tes tentatives, ta
+        progression et les messages postés dans les canaux de classe —
+        immédiatement, sans demande à valider et sans copie conservée. Si tu
+        préfères qu’on le fasse pour toi, écris à {CONTACT}.
       </p>
 
       <h2>Tes droits</h2>
