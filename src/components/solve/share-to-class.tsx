@@ -127,6 +127,12 @@ export function ShareToClass({
           <Button type="submit" disabled={busy || !note.trim()}>
             {t("classes.shareSend")}
           </Button>
+
+          {error && (
+            <p role="alert" className="text-sm text-[var(--color-danger)]">
+              {error}
+            </p>
+          )}
         </form>
       )}
     </section>
