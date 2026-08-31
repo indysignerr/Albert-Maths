@@ -202,6 +202,7 @@ export default function ClassesPage() {
                 <div className="mt-3 flex gap-2">
                   <input
                     id="join-code"
+                    autoComplete="off"
                     value={code}
                     onChange={(e) => setCode(e.target.value.toUpperCase())}
                     placeholder="XXXXXX"

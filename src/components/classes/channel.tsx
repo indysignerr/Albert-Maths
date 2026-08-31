@@ -222,6 +222,7 @@ export function ClassChannel({
         </label>
         <input
           id="class-message"
+          autoComplete="off"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           placeholder={t("classes.messagePlaceholder")}

@@ -252,6 +252,8 @@ export const fr: PartialDictionary = {
   },
 
   auth: {
+    showPassword: "Afficher le mot de passe",
+    hidePassword: "Masquer le mot de passe",
     signInTitle: "Connexion",
     signInSubtitle: "Réservé aux étudiants d’Albert School.",
     email: "Adresse de l’école",

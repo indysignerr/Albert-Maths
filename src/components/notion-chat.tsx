@@ -121,6 +121,7 @@ export function NotionChat({ compact = false }: { compact?: boolean }) {
         </label>
         <input
           id="notion-question"
+          autoComplete="off"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           placeholder={t("notions.placeholder")}

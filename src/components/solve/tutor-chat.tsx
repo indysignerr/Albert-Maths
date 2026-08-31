@@ -99,6 +99,7 @@ export function TutorChat({
           </label>
           <input
             id="tutor-message"
+            autoComplete="off"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             placeholder={t("solve.chatPlaceholder")}

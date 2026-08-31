@@ -119,6 +119,7 @@ export function ShareToClass({
           </label>
           <input
             id="share-note"
+            autoComplete="off"
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder={t("classes.sharePrompt")}

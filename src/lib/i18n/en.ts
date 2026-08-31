@@ -233,6 +233,8 @@ export const en = {
   },
 
   auth: {
+    showPassword: "Show password",
+    hidePassword: "Hide password",
     signInTitle: "Sign in",
     signInSubtitle: "Albert School students only.",
     email: "School email",
