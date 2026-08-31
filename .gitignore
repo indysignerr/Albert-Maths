@@ -30,8 +30,13 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
+# ...except the two NEXT_PUBLIC_* values, which Next inlines into the client
+# bundle anyway. Committing them means a deploy needs no dashboard setup.
+# See the comment at the top of .env.production.
+!.env.production
+!.env.example
 
 # vercel
 .vercel

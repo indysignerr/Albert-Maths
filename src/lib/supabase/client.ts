@@ -4,9 +4,13 @@ import type { Database } from "@/lib/database.types";
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+// Failing the build is deliberate. These are inlined at build time, so a build
+// without them produces a site where every request fails at runtime with a much
+// more confusing error. Better to never ship it.
 if (!url || !anonKey) {
   throw new Error(
-    "Missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY. Copy .env.example to .env.local.",
+    "Missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY. " +
+      "They are committed in .env.production for deploys; locally, copy .env.example to .env.local.",
   );
 }
 
