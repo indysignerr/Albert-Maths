@@ -24,6 +24,12 @@ export const supabase = createClient<Database>(url, anonKey, {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
-    flowType: "pkce",
+    // Implicit, not PKCE. PKCE keeps a verifier in the localStorage of the
+    // browser that *asked* for the link, so the link only works if it is opened
+    // in that same browser profile — which breaks the ordinary case of reading
+    // mail on a phone and working on a laptop, and breaks incognito entirely.
+    // The session lands in the URL fragment, which browsers never send to a
+    // server, and the client strips it on arrival.
+    flowType: "implicit",
   },
 });
