@@ -6,6 +6,8 @@ import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/lib/i18n";
 import type { ChannelMessage, ClassRow, Profile } from "@/lib/database.types";
+import { ClassMembers } from "@/components/classes/members";
+import { Tex } from "@/components/tex";
 import { Button } from "@/components/ui/button";
 
 /** "Léa M." — enough to be accountable, not enough to be a directory. */
@@ -161,18 +163,42 @@ export function ClassChannel({
         </button>
       </header>
 
+      <ClassMembers classRow={classRow} />
+
       <div className="max-h-[28rem] min-h-64 space-y-4 overflow-y-auto p-5">
         {visible.length === 0 ? (
           <p className="text-[15px] text-text-muted">{t("classes.empty")}</p>
         ) : (
           visible.map((m) => (
             <div key={m.id} className="group flex items-start gap-3">
-              <p className="flex-1 text-[15px] leading-relaxed text-text-muted">
-                <span className="font-medium text-text">
-                  {displayName(authors[m.profile_id])}
-                </span>{" "}
-                — {m.content}
-              </p>
+              <div className="flex-1">
+                <p className="text-[15px] leading-relaxed text-text-muted">
+                  <span className="font-medium text-text">
+                    {displayName(authors[m.profile_id])}
+                  </span>
+                  <span className="ml-2 text-xs tabular-nums text-text-faint">
+                    {new Date(m.created_at).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </p>
+                <p className="mt-0.5 text-[15px] leading-relaxed text-text-muted">
+                  {m.content}
+                </p>
+                {m.shared_statement && (
+                  <div className="mt-2 rounded-xl border border-border bg-bg-subtle px-4 py-3">
+                    <p className="text-xs tracking-wide text-text-faint uppercase">
+                      {t("classes.sharedExercise")}
+                    </p>
+                    <div className="mt-1.5 text-[15px]">
+                      <Tex block raw>
+                        {m.shared_statement}
+                      </Tex>
+                    </div>
+                  </div>
+                )}
+              </div>
               {m.profile_id !== session?.user.id && (
                 <button
                   type="button"

@@ -28,6 +28,12 @@ export type ClassRow = {
   created_at: string;
 };
 
+export type ClassMember = {
+  class_id: string;
+  profile_id: string;
+  joined_at: string;
+};
+
 export type Problem = {
   id: string;
   owner_id: string;
@@ -80,6 +86,7 @@ export type ChannelMessage = {
   content: string;
   problem_id: string | null;
   hidden_at: string | null;
+  shared_statement: string | null;
   created_at: string;
 };
 
@@ -101,6 +108,7 @@ export interface Database {
     Tables: {
       profiles: Table<Profile>;
       classes: Table<ClassRow>;
+      class_members: Table<ClassMember>;
       problems: Table<Problem>;
       hint_reveals: Table<HintReveal>;
       attempts: Table<Attempt>;

@@ -22,6 +22,7 @@ import { useT } from "@/lib/i18n";
 import { rememberDestination } from "@/lib/auth-redirect";
 import { TutorChat } from "@/components/solve/tutor-chat";
 import { Consolidation } from "@/components/solve/consolidation";
+import { ShareToClass } from "@/components/solve/share-to-class";
 import { Button } from "@/components/ui/button";
 import { AlbertLogo } from "@/components/brand/logo";
 import { cn } from "@/lib/utils";
@@ -311,6 +312,8 @@ export default function SolvePage() {
                     </div>
                   )}
                 </section>
+
+                <ShareToClass problemId={problemId} statement={statement} />
 
                 <TutorChat
                   statement={statement}
