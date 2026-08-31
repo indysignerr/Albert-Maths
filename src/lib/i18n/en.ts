@@ -220,6 +220,20 @@ export const en = {
     campusLabel: "Campus",
   },
 
+  notions: {
+    title: "Refresh a notion",
+    subtitle: "For when you have forgotten how something works.",
+    openOnSolve: "Forgotten a notion?",
+    placeholder: "How does integration by parts work again?",
+    ask: "Explain it",
+    thinking: "Looking it up…",
+    empty:
+      "Ask about a result, a theorem, a method — anything from the course you cannot remember. This does not know which exercise you are on and will not solve it.",
+    deflected:
+      "That looked like a specific exercise. Here is the notion behind it — take the exercise itself to the solver, where the hints open one at a time.",
+    scope: "Explains notions only. It never sees your exercise.",
+  },
+
   settings: {
     title: "Settings",
     profile: "Your profile",

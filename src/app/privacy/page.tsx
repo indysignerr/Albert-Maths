@@ -227,11 +227,12 @@ function Fr() {
 
       <h2>Durée de conservation</h2>
       <p>
-        Jusqu’à ce que tu les supprimes. <strong>Paramètres → Supprimer mon
-        compte</strong> efface ton profil, tes exercices, tes tentatives, ta
-        progression et les messages postés dans les canaux de classe —
-        immédiatement, sans demande à valider et sans copie conservée. Si tu
-        préfères qu’on le fasse pour toi, écris à {CONTACT}.
+        Jusqu’à ce que tu les supprimes.{" "}
+        <strong>Paramètres → Supprimer mon compte</strong> efface ton profil,
+        tes exercices, tes tentatives, ta progression et les messages postés
+        dans les canaux de classe — immédiatement, sans demande à valider et
+        sans copie conservée. Si tu préfères qu’on le fasse pour toi, écris à{" "}
+        {CONTACT}.
       </p>
 
       <h2>Tes droits</h2>

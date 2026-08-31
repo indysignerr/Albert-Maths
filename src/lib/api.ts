@@ -83,6 +83,16 @@ export const api = {
     message: string;
   }) => post<{ reply: string }>("/api/chat", args),
 
+  notion: (args: {
+    question: string;
+    language: string;
+    history: { author: string; content: string }[];
+  }) =>
+    post<{ notion: string; explanation: string; deflected: boolean }>(
+      "/api/notion",
+      args,
+    ),
+
   consolidate: (args: {
     statement: string;
     misconception: string;

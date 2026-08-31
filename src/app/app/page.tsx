@@ -19,6 +19,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguagePicker } from "@/components/language-picker";
 import { Button } from "@/components/ui/button";
 import { Tex } from "@/components/tex";
+import { NotionChat } from "@/components/notion-chat";
 
 interface Progress {
   errorsUnderstood: number;
@@ -162,6 +163,10 @@ export default function AppHome() {
               </p>
             </Link>
           </div>
+
+          <section className="mt-12">
+            <NotionChat />
+          </section>
 
           <section className="mt-12">
             <h2 className="text-sm tracking-wide text-text-faint uppercase">

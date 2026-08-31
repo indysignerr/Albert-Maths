@@ -3,12 +3,21 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Camera, Lock, PencilLine, ShieldCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  Camera,
+  ChevronDown,
+  Lock,
+  PencilLine,
+  ShieldCheck,
+} from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/lib/supabase/client";
 import { api, ApiError, type Review, type Transcription } from "@/lib/api";
 import { verifyAnswer, type Verdict } from "@/lib/verify";
 import { Tex } from "@/components/tex";
+import { NotionChat } from "@/components/notion-chat";
 import { useT } from "@/lib/i18n";
 import { TutorChat } from "@/components/solve/tutor-chat";
 import { Consolidation } from "@/components/solve/consolidation";
@@ -39,6 +48,7 @@ export default function SolvePage() {
   const [now, setNow] = useState(() => Date.now());
 
   const [working, setWorking] = useState("");
+  const [notionsOpen, setNotionsOpen] = useState(false);
   const [review, setReview] = useState<Review | null>(null);
 
   useEffect(() => {
@@ -271,6 +281,32 @@ export default function SolvePage() {
                     }}
                   />
                 )}
+
+                {/* Collapsed by default: it is a sidelong reference, not a
+                    second place to work the problem. */}
+                <section className="mt-10">
+                  <button
+                    type="button"
+                    onClick={() => setNotionsOpen((open) => !open)}
+                    aria-expanded={notionsOpen}
+                    className="flex h-11 w-full items-center gap-2 rounded-xl border border-border px-4 text-[15px] text-text-muted transition-colors hover:border-border-strong hover:text-text"
+                  >
+                    <BookOpen className="size-[18px]" aria-hidden />
+                    {t("notions.openOnSolve")}
+                    <ChevronDown
+                      className={cn(
+                        "ml-auto size-4 transition-transform",
+                        notionsOpen && "rotate-180",
+                      )}
+                      aria-hidden
+                    />
+                  </button>
+                  {notionsOpen && (
+                    <div className="mt-3">
+                      <NotionChat compact />
+                    </div>
+                  )}
+                </section>
 
                 <TutorChat
                   statement={statement}

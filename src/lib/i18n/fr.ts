@@ -239,6 +239,20 @@ export const fr: PartialDictionary = {
     campusLabel: "Campus",
   },
 
+  notions: {
+    title: "Revoir une notion",
+    subtitle: "Pour quand tu as oublié comment quelque chose marche.",
+    openOnSolve: "Une notion oubliée ?",
+    placeholder: "L’intégration par parties, ça marche comment déjà ?",
+    ask: "Explique",
+    thinking: "Recherche…",
+    empty:
+      "Demande un résultat, un théorème, une méthode — tout ce que tu ne retrouves plus du cours. Il ne sait pas sur quel exercice tu travailles et ne le résoudra pas.",
+    deflected:
+      "Ça ressemblait à un exercice précis. Voici la notion qui est derrière — l’exercice lui-même se travaille dans le solveur, où les indices s’ouvrent un par un.",
+    scope: "Explique les notions uniquement. Il ne voit jamais ton exercice.",
+  },
+
   settings: {
     title: "Paramètres",
     profile: "Ton profil",
