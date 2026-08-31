@@ -29,14 +29,12 @@ export function apiRoute<T>(handle: (request: Request, env: Env) => Promise<T>) 
     // request died as a Cloudflare 1101 exception page — which is not JSON, so
     // the client could only say "something went wrong".
     try {
-      const missing = (
-        ["SUPABASE_URL", "SUPABASE_ANON_KEY"] as const
-      ).filter((name) => !env[name]);
-      if (missing.length) {
-        // A deployment fault, not the student's: say so plainly rather than
-        // letting it surface as a failed sign-in.
+      // Only the model key can be missing now — the Supabase values fall back
+      // to committed public defaults. A deployment fault should say it is one
+      // rather than surfacing as a failed sign-in.
+      if (!env.MISTRAL_API_KEY) {
         return json(
-          { error: `Server is misconfigured: ${missing.join(", ")} not set` },
+          { error: "Server is misconfigured: MISTRAL_API_KEY not set" },
           503,
           cors,
         );

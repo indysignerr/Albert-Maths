@@ -1,8 +1,10 @@
 import type { ProviderEnv } from "./mistral";
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from "./config";
 
 export interface Env extends ProviderEnv {
-  SUPABASE_URL: string;
-  SUPABASE_ANON_KEY: string;
+  /** Optional: falls back to the committed public values in config.ts. */
+  SUPABASE_URL?: string;
+  SUPABASE_ANON_KEY?: string;
   /** Comma-separated origins allowed to call the API from a browser in dev. */
   DEV_ORIGINS?: string;
 }
@@ -15,10 +17,12 @@ export async function authenticate(request: Request, env: Env) {
   const header = request.headers.get("Authorization");
   if (!header?.startsWith("Bearer ")) return null;
 
-  const res = await fetch(
-    `${env.SUPABASE_URL.replace(/\/$/, "")}/auth/v1/user`,
-    { headers: { Authorization: header, apikey: env.SUPABASE_ANON_KEY } },
-  );
+  const base = (env.SUPABASE_URL ?? PUBLIC_SUPABASE_URL).replace(/\/$/, "");
+  const apikey = env.SUPABASE_ANON_KEY ?? PUBLIC_SUPABASE_ANON_KEY;
+
+  const res = await fetch(`${base}/auth/v1/user`, {
+    headers: { Authorization: header, apikey },
+  });
   if (!res.ok) return null;
 
   const user = (await res.json()) as { id?: string };
