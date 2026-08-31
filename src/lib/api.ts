@@ -74,4 +74,22 @@ export const api = {
 
   review: (args: { statement: string; lines: string[] }) =>
     post<Review>("/api/review", args),
+
+  chat: (args: {
+    statement: string;
+    working: string | null;
+    unlockedLevels: number;
+    history: { author: string; content: string }[];
+    message: string;
+  }) => post<{ reply: string }>("/api/chat", args),
+
+  consolidate: (args: {
+    statement: string;
+    misconception: string;
+    language: string;
+  }) =>
+    post<{ statement_latex: string; sympy: string | null; targets: string }>(
+      "/api/consolidate",
+      args,
+    ),
 };

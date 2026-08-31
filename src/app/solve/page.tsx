@@ -9,6 +9,8 @@ import { supabase } from "@/lib/supabase/client";
 import { api, ApiError, type Review, type Transcription } from "@/lib/api";
 import { verifyAnswer, type Verdict } from "@/lib/verify";
 import { Tex } from "@/components/tex";
+import { TutorChat } from "@/components/solve/tutor-chat";
+import { Consolidation } from "@/components/solve/consolidation";
 import { Button } from "@/components/ui/button";
 import { AlbertLogo } from "@/components/brand/logo";
 import { cn } from "@/lib/utils";
@@ -250,6 +252,28 @@ export default function SolvePage() {
                 </Button>
 
                 {review && <ReviewCard review={review} working={working} />}
+
+                {review?.verdict === "error" && (
+                  <Consolidation
+                    statement={statement}
+                    misconception={review.why}
+                    language={profile?.ui_locale ?? "en"}
+                    onPassed={() => {
+                      // Progress counts understanding, never solutions viewed.
+                      void supabase.from("progress_events").insert({
+                        profile_id: session!.user.id,
+                        kind: "consolidation_passed",
+                        problem_id: problemId,
+                      });
+                    }}
+                  />
+                )}
+
+                <TutorChat
+                  statement={statement}
+                  working={working.trim() || null}
+                  unlockedLevels={revealedLevels.length}
+                />
               </section>
 
               <section>

@@ -90,3 +90,44 @@ export async function verifyAnswer(check: Check): Promise<Verdict> {
     };
   }
 }
+
+const EVALUATE = `
+from sympy import simplify, sympify
+from sympy.abc import *
+
+try:
+    value = sympify(_expression)
+    _result = "ok|" + str(simplify(value))
+except Exception as exc:
+    _result = "error|" + type(exc).__name__
+
+_result
+`;
+
+/**
+ * Computes an expression outright, for cases where nothing has claimed an answer
+ * yet — a generated consolidation exercise, whose answer is derived here rather
+ * than taken from the model. Asked for a value directly the model will
+ * occasionally state one that is simply wrong, and marking a correct answer
+ * wrong is the one failure a learning tool cannot afford.
+ */
+export async function evaluateExpression(
+  expression: string,
+): Promise<string | null> {
+  try {
+    const py = await load();
+    py.globals.set("_expression", expression);
+    const [status, detail] = py.runPython(EVALUATE).split("|");
+    return status === "ok" ? detail : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Whether a student's written answer matches a known-correct expression. */
+export async function answersMatch(
+  studentAnswer: string,
+  correct: string,
+): Promise<Verdict> {
+  return verifyAnswer({ expression: correct, claimed: studentAnswer });
+}

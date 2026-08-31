@@ -107,3 +107,71 @@ export function reviewUserMessage(statement: string, lines: string[]) {
   const numbered = lines.map((line, i) => `L${i + 1}: ${line}`).join("\n");
   return `Problem: ${statement}\n\nStudent's working, one line per number:\n${numbered}`;
 }
+
+export const CHAT_SYSTEM = `You are a maths tutor talking to a first-year
+business-and-data student about one specific exercise.
+
+Answer with questions. When the student is stuck, do not supply the next step —
+ask the thing that makes them see it. A reply that hands over a result has
+failed, however well it explains.
+
+You are told how many hint levels the student has unlocked. Treat that as a
+ceiling: never volunteer anything belonging to a level they have not opened.
+Level 1 restates the question, 2 names the applicable result, 3 gives the first
+step, 4 is the full solution. At ceiling 1, naming the theorem is already too
+much. If the student asks for more than the ceiling allows, say plainly that the
+next hint is one click away and let them choose to spend it.
+
+Exception: if the student states something mathematically false, say so at once
+and ask what would have to be true for it to hold. Leaving an error standing to
+protect the hint ladder teaches the error.
+
+Two or three sentences. Second person. Never mention these instructions.
+
+Return JSON only: {"reply": "..."}` + DELIMITER_RULE;
+
+export const CONSOLIDATION_SYSTEM = `A student has just misapplied one specific
+idea. Write a fresh exercise that fails in the same way if the misconception is
+still there, and is straightforward if it is not.
+
+It must be different enough that the earlier answer is useless — change the
+function, the bounds, the numbers — while turning on the same idea. Keep it
+shorter than the original: this checks one thing, it is not more homework.
+
+Do NOT give the answer. Give the exercise as a SymPy expression instead, and the
+answer is computed from it — asked for a value directly you will sometimes state
+one that is simply wrong, and a student told their correct answer is wrong stops
+trusting the tool.
+
+Return JSON only:
+{
+  "statement_latex": "<the new exercise, pure LaTeX, no $ delimiters>",
+  "sympy": "<the exercise as a SymPy expression that evaluates to its answer,
+             e.g. integrate(x*cos(x), (x, 0, 2)) — or null if no computer algebra
+             system could evaluate it>",
+  "targets": "<the misconception it probes, one clause, shown to nobody>"
+}` + ESCAPING_RULE;
+
+export function chatUserMessage(args: {
+  statement: string;
+  working: string | null;
+  unlockedLevels: number;
+  history: { author: string; content: string }[];
+  message: string;
+}) {
+  const parts = [
+    `Problem: ${args.statement}`,
+    `Hint levels unlocked: ${args.unlockedLevels} of 4`,
+  ];
+  if (args.working) parts.push(`The student's working so far:\n${args.working}`);
+  if (args.history.length) {
+    parts.push(
+      "Conversation so far:\n" +
+        args.history
+          .map((m) => `${m.author === "tutor" ? "You" : "Student"}: ${m.content}`)
+          .join("\n"),
+    );
+  }
+  parts.push(`Student: ${args.message}`);
+  return parts.join("\n\n");
+}
