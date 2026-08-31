@@ -24,13 +24,30 @@ export function apiRoute<T>(handle: (request: Request, env: Env) => Promise<T>) 
       return json({ error: "Method not allowed" }, 405, cors);
     }
 
-    // Every endpoint costs quota, so every endpoint needs a real user.
-    const user = await authenticate(request, env);
-    if (!user) {
-      return json({ error: "Sign in to use the tutor" }, 401, cors);
-    }
-
+    // Everything inside the try, authentication included. It was outside, so a
+    // missing SUPABASE_URL made fetch() throw on an undefined host and the
+    // request died as a Cloudflare 1101 exception page — which is not JSON, so
+    // the client could only say "something went wrong".
     try {
+      const missing = (
+        ["SUPABASE_URL", "SUPABASE_ANON_KEY"] as const
+      ).filter((name) => !env[name]);
+      if (missing.length) {
+        // A deployment fault, not the student's: say so plainly rather than
+        // letting it surface as a failed sign-in.
+        return json(
+          { error: `Server is misconfigured: ${missing.join(", ")} not set` },
+          503,
+          cors,
+        );
+      }
+
+      // Every endpoint costs quota, so every endpoint needs a real user.
+      const user = await authenticate(request, env);
+      if (!user) {
+        return json({ error: "Sign in to use the tutor" }, 401, cors);
+      }
+
       return json(await handle(request, env), 200, cors);
     } catch (err) {
       if (err instanceof ProviderError) {

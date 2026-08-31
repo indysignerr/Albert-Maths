@@ -15,9 +15,10 @@ export async function authenticate(request: Request, env: Env) {
   const header = request.headers.get("Authorization");
   if (!header?.startsWith("Bearer ")) return null;
 
-  const res = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
-    headers: { Authorization: header, apikey: env.SUPABASE_ANON_KEY },
-  });
+  const res = await fetch(
+    `${env.SUPABASE_URL.replace(/\/$/, "")}/auth/v1/user`,
+    { headers: { Authorization: header, apikey: env.SUPABASE_ANON_KEY } },
+  );
   if (!res.ok) return null;
 
   const user = (await res.json()) as { id?: string };
