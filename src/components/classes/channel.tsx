@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Send } from "lucide-react";
+import { Flag, Send } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/lib/i18n";
@@ -30,6 +30,7 @@ export function ClassChannel({
   const [authors, setAuthors] = useState<Record<string, Profile>>({});
   const [draft, setDraft] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [reported, setReported] = useState<Set<string>>(new Set());
   const endRef = useRef<HTMLDivElement>(null);
 
   const loadAuthors = useCallback(async (ids: string[]) => {
@@ -123,6 +124,25 @@ export function ClassChannel({
     setDraft("");
   }
 
+  async function report(id: string) {
+    // Optimistic: the reporter stops seeing it immediately. Everyone else keeps
+    // it until a second person agrees, so one reader cannot silence a classmate.
+    setReported((current) => new Set(current).add(id));
+    const { error: rpcError } = await supabase.rpc("report_message", {
+      target_message: id,
+    });
+    if (rpcError) {
+      setReported((current) => {
+        const next = new Set(current);
+        next.delete(id);
+        return next;
+      });
+      setError(t("classes.reportFailed"));
+    }
+  }
+
+  const visible = messages.filter((m) => !reported.has(m.id));
+
   return (
     <section className="rounded-2xl border border-border bg-surface">
       <header className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
@@ -142,19 +162,29 @@ export function ClassChannel({
       </header>
 
       <div className="max-h-[28rem] min-h-64 space-y-4 overflow-y-auto p-5">
-        {messages.length === 0 ? (
+        {visible.length === 0 ? (
           <p className="text-[15px] text-text-muted">{t("classes.empty")}</p>
         ) : (
-          messages.map((m) => (
-            <p
-              key={m.id}
-              className="text-[15px] leading-relaxed text-text-muted"
-            >
-              <span className="font-medium text-text">
-                {displayName(authors[m.profile_id])}
-              </span>{" "}
-              — {m.content}
-            </p>
+          visible.map((m) => (
+            <div key={m.id} className="group flex items-start gap-3">
+              <p className="flex-1 text-[15px] leading-relaxed text-text-muted">
+                <span className="font-medium text-text">
+                  {displayName(authors[m.profile_id])}
+                </span>{" "}
+                — {m.content}
+              </p>
+              {m.profile_id !== session?.user.id && (
+                <button
+                  type="button"
+                  onClick={() => report(m.id)}
+                  aria-label={t("classes.report")}
+                  title={t("classes.report")}
+                  className="shrink-0 rounded p-1 text-text-faint opacity-0 transition-opacity group-hover:opacity-100 hover:text-[var(--color-danger)] focus-visible:opacity-100"
+                >
+                  <Flag className="size-4" aria-hidden />
+                </button>
+              )}
+            </div>
           ))
         )}
         <div ref={endRef} />

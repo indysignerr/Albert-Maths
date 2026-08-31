@@ -217,6 +217,9 @@ export const en = {
     empty: "No messages yet. Be the first to ask.",
     blocked:
       "That message was not sent. Keep it about the maths — insults and personal attacks are blocked.",
+    report: "Report",
+    reported: "Reported. Two reports hide a message.",
+    reportFailed: "Could not report that message.",
     campusLabel: "Campus",
   },
 

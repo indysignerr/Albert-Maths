@@ -116,6 +116,7 @@ export interface Database {
         Returns: ClassRow;
       };
       class_member_count: { Args: { target_class: string }; Returns: number };
+      report_message: { Args: { target_message: string }; Returns: null };
       problems_today: { Args: Record<string, never>; Returns: number };
       daily_problem_limit: { Args: Record<string, never>; Returns: number };
       delete_own_account: { Args: Record<string, never>; Returns: null };

@@ -236,6 +236,9 @@ export const fr: PartialDictionary = {
     empty: "Aucun message. Sois le premier à demander.",
     blocked:
       "Ce message n’a pas été envoyé. Reste sur les maths — les insultes et attaques personnelles sont bloquées.",
+    report: "Signaler",
+    reported: "Signalé. Deux signalements masquent un message.",
+    reportFailed: "Le signalement n’a pas abouti.",
     campusLabel: "Campus",
   },
 

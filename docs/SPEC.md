@@ -47,7 +47,14 @@ and Marseille, so content is shared across campuses.
 
 - Class channels with realtime chat.
 - Students appear as first name + last initial.
-- Automatic filtering of insults, harassment patterns and sensitive terms.
+- Two layers of moderation. A blocked-term list catches unambiguous slurs —
+  including those aimed at religion, ethnicity and sexuality — enforced by a
+  database trigger, not the interface. Neutral words for a religion or an origin
+  are deliberately absent: a student must be able to say what they are, and a
+  list that blocked those would itself discriminate.
+- Reporting covers the rest, because most hate speech is built from ordinary
+  words and no list can catch it. Two independent reports hide a message; one
+  cannot, so a single reader cannot silence a classmate. Hiding is reversible.
 
 ## Languages
 
