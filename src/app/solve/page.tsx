@@ -203,7 +203,9 @@ export default function SolvePage() {
                   The exercise
                 </h2>
                 <div className="mt-3 rounded-2xl border border-border bg-surface p-6 text-lg">
-                  <Tex block>{statement}</Tex>
+                  <Tex block raw>
+                    {statement}
+                  </Tex>
                 </div>
                 <details className="mt-3">
                   <summary className="cursor-pointer text-sm text-text-muted">

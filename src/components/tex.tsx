@@ -3,38 +3,50 @@
 import { useMemo } from "react";
 import katex from "katex";
 
-/**
- * Renders the mixed prose-and-LaTeX the tutor produces: text passes through,
- * anything between $…$ is typeset. Malformed LaTeX renders as its source rather
- * than throwing, so a bad model response degrades to readable text.
- */
-export function Tex({
-  children,
-  block = false,
-}: {
+interface TexProps {
   children: string;
+  /** Typeset on its own line rather than inline. */
   block?: boolean;
-}) {
+  /**
+   * The whole string is LaTeX with no $ delimiters — how the transcription
+   * endpoint returns a statement. Without this the source would be printed
+   * verbatim, since there is nothing to mark as mathematics.
+   */
+  raw?: boolean;
+}
+
+export function Tex({ children, block = false, raw = false }: TexProps) {
   const html = useMemo(() => {
-    const parts = children.split(/(\$[^$]+\$)/g);
-    return parts
+    if (raw) return render(children, block) ?? escapeHtml(children);
+
+    // Prose: only the $…$ spans are mathematics.
+    return children
+      .split(/(\$[^$]+\$)/g)
       .map((part) => {
         if (!part.startsWith("$") || !part.endsWith("$") || part.length < 3) {
           return escapeHtml(part);
         }
-        try {
-          return katex.renderToString(part.slice(1, -1), {
-            displayMode: block,
-            throwOnError: false,
-          });
-        } catch {
-          return escapeHtml(part);
-        }
+        return render(part.slice(1, -1), block) ?? escapeHtml(part);
       })
       .join("");
-  }, [children, block]);
+  }, [children, block, raw]);
 
   return <span dangerouslySetInnerHTML={{ __html: html }} />;
+}
+
+/** Returns null when the source is not valid LaTeX, so callers can fall back. */
+function render(source: string, block: boolean): string | null {
+  try {
+    return katex.renderToString(source, {
+      displayMode: block,
+      // Render what it can and mark the rest, rather than throwing away the
+      // whole hint because one command was mangled.
+      throwOnError: false,
+      strict: false,
+    });
+  } catch {
+    return null;
+  }
 }
 
 function escapeHtml(s: string) {

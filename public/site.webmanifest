@@ -1,0 +1,21 @@
+{
+  "name": "Albert Maths",
+  "short_name": "Albert Maths",
+  "description": "Understand your mistakes, not just the answer.",
+  "start_url": "/app/",
+  "display": "standalone",
+  "background_color": "#202448",
+  "theme_color": "#202448",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

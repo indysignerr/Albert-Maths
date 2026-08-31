@@ -85,8 +85,37 @@ export async function completeJson<T>(
 
   const content = out.choices?.[0]?.message?.content ?? "";
   try {
-    return JSON.parse(content) as T;
+    return repairLatex(JSON.parse(content)) as T;
   } catch {
     throw new ProviderError("The tutor returned an unreadable response", 502);
   }
+}
+
+/**
+ * A model writing LaTeX into JSON tends to emit `\frac` rather than `\\frac`.
+ * That is *valid* JSON — `\f` is a form feed — so JSON.parse succeeds and
+ * quietly yields "\x0Crac{2}{e}", which reaches the student as "rac{2}{e}".
+ *
+ * Repairing the raw JSON text is ambiguous (a correct `\\frac` contains a
+ * `\f` substring too), so this runs on the parsed values, where a bare control
+ * character can only have come from a mangled command.
+ *
+ * Tab and newline are deliberately left alone: a real line break in an
+ * explanation is far likelier than \times or \neq, and the prompt already asks
+ * for doubled backslashes.
+ */
+function repairLatex(value: unknown): unknown {
+  if (typeof value === "string") {
+    return value
+      .replace(/\f/g, "\\f") // \frac, \forall
+      .replace(/[\b]/g, "\\b") // \binom, \beta
+      .replace(/\v/g, "\\v"); // \vec, \varphi
+  }
+  if (Array.isArray(value)) return value.map(repairLatex);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([k, v]) => [k, repairLatex(v)]),
+    );
+  }
+  return value;
 }

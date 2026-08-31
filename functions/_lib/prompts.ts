@@ -7,6 +7,23 @@
  * invented a wrong reason. With them, both land on the correct line.
  */
 
+
+/**
+ * Backslashes are the one thing that reliably breaks LaTeX coming back through
+ * JSON: a single `\f` is a valid JSON escape, so `\frac` parses to a form feed
+ * followed by "rac" and the command silently vanishes. Asking for doubled
+ * backslashes prevents it; repairJsonLatex() in mistral.ts catches the rest.
+ */
+const ESCAPING_RULE = `
+This is JSON, so write each LaTeX backslash TWICE: "\\\\frac{1}{2}", never
+"\\frac{1}{2}". A single backslash before f, b, n, t or v is read as a control
+character and destroys the command — \\frac silently becomes "rac".`;
+
+/** Prose fields mix words and mathematics, so the maths has to be marked. */
+const DELIMITER_RULE = `
+Write every piece of mathematics as LaTeX delimited by $...$, even a single
+symbol, so it can be typeset.` + ESCAPING_RULE;
+
 export const TRANSCRIBE_SYSTEM = `You transcribe a photographed maths exercise.
 
 Return JSON only:
@@ -19,7 +36,11 @@ Return JSON only:
 }
 
 Transcribe only. Do not solve, simplify, correct or comment on anything.
-If the photo contains no student working, return an empty array.`;
+If the photo contains no student working, return an empty array.
+
+statement_latex is pure LaTeX with no surrounding $ delimiters — it is typeset
+as a whole. Lines in student_working stay as the student wrote them.` +
+  ESCAPING_RULE;
 
 export const HINT_SYSTEM = `You are a maths tutor for first-year business-and-data
 students at a school where half the curriculum is quantitative.
@@ -41,7 +62,7 @@ give less.
 Write in the requested language, in the second person, in at most four sentences
 (level 4 may be longer). Use LaTeX for mathematics, delimited by $...$.
 
-Return JSON only: {"hint": "..."}`;
+Return JSON only: {"hint": "..."}` + DELIMITER_RULE;
 
 export const REVIEW_SYSTEM = `You are a maths tutor reviewing a student's own working.
 
@@ -65,7 +86,8 @@ Return JSON only:
 }
 
 Never state the correct final answer and never write out the corrected
-computation. The point is that the student repairs it, not that they read it.`;
+computation. The point is that the student repairs it, not that they read it.` +
+  DELIMITER_RULE;
 
 export function reviewUserMessage(statement: string, lines: string[]) {
   const numbered = lines.map((line, i) => `L${i + 1}: ${line}`).join("\n");
