@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { I18nProvider, LOCALES, STORAGE_KEY, type Locale } from "./index";
@@ -46,12 +46,17 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
     () => "en" as Locale,
   );
 
-  // The profile wins: the track chosen at onboarding is a deliberate statement
-  // about which language the student works in. An explicit change writes to both,
-  // so there is no third source of truth to keep in sync.
-  const locale: Locale = isLocale(profile?.ui_locale)
-    ? profile.ui_locale
-    : device;
+  // A choice made in this session wins over everything, because the profile in
+  // memory still holds the old value until the write lands and the refresh
+  // returns — long enough for a stale profile to overwrite the click that just
+  // happened, which is exactly what it did.
+  const [chosen, setChosen] = useState<Locale | null>(null);
+
+  // Below that, the profile: the track picked at onboarding is a deliberate
+  // statement about which language the student works in. Then the device, then
+  // English.
+  const locale: Locale =
+    chosen ?? (isLocale(profile?.ui_locale) ? profile.ui_locale : device);
 
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -59,6 +64,7 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
 
   const change = useCallback(
     (next: Locale) => {
+      setChosen(next);
       try {
         localStorage.setItem(STORAGE_KEY, next);
       } catch {
