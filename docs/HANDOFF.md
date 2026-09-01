@@ -76,22 +76,55 @@ was assumed applied when it was not.
 - Mistral's free tier caps requests per minute. Thirty students working the same
   evening will hit it.
 
-## If the platform grows
+## The platform: Albert Tools
 
-The direction discussed is "Albert Tools": the maths tool, a code tool, and a
-lecture recorder that summarises for a whole class.
+The school has approved the project and the use of its name, so this is the
+direction. One portal with tiles for each tool: maths, code, and a lecture
+recorder that summarises for a whole class.
+
+### Decided: one application, not several
+
+The tools are sections of this app — `/maths/…`, `/code/…`, `/cours/…` — not
+separate deployments.
+
+The wanted behaviour is "sign in at the portal, click a tool, already
+authenticated". With one origin that is not a feature, it is what happens by
+default. Separate subdomains would mean building single sign-on across them:
+the Supabase session lives in localStorage, which is partitioned per origin, so
+it would take cookies on the parent domain or a token hand-off — work to solve a
+problem the split would have created.
+
+Extracting a tool later stays possible, and would reuse the same Supabase
+project either way.
 
 Do not start a new repository. Auth, classes, moderation, i18n, the legal pages
 and the deployment are all subject-agnostic already, and `problems.subject`
-exists for exactly this. The work is routing and a dashboard that launches
-tools, not a rebuild.
+exists for exactly this. The work is routing and a portal, not a rebuild.
 
-Two things to settle first, neither of them code:
+### Shape
 
-- **The name.** "Albert" is the school's. Using it in a product name and a
-  domain, before the school has agreed to anything, is a liability rather than
-  an endorsement.
+```
+/                 marketing, unchanged
+/app              the portal — tiles for each tool
+/maths/solve      today's /solve
+/maths/revise     today's /revise
+/code/…           reuses the same classes, moderation and chat; subject changes
+/cours/…          the lecture recorder
+/classes          cross-cutting, not owned by any tool
+/settings         cross-cutting
+```
+
+### Still open
+
+- **Cross-platform**: the app is already an installable PWA on phone and
+  desktop. Native store apps would be a separate project — confirm which is
+  meant.
+- **Domain**: a subdomain of the school's would also fix email deliverability,
+  which currently goes through a personal Gmail account and lands in spam.
 - **Consent for the recorder.** Recording a lecture records a teacher's voice.
-  They have rights over it, the school's rules may forbid it, and under the GDPR
-  the teacher becomes a data subject. This needs the school's agreement *before*
-  it is built, not after.
+  They have rights over it and under the GDPR the teacher becomes a data
+  subject. The school's approval of the project is not the same as the teachers'
+  approval of being recorded; get that before building it.
+- **Cost**: transcription runs about €0.38 per two-hour lecture. That holds only
+  if one student records and shares to the class — thirty individual recordings
+  of the same lecture is thirty times the price, and a worse product.
